@@ -20,6 +20,8 @@ Authors@R:
            role = c("aut"),
            email = "wangp9@ucmail.uc.edu"))
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
+URL: https://github.com/XiaoruiZhu/SPSP
+BugReports: https://github.com/XiaoruiZhu/SPSP/issues
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: Rcpp (>= 1.0.7)
