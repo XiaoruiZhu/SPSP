@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![](https://www.r-pkg.org/badges/version/SPSP)](https://www.r-pkg.org/badges/version/SPSP)
+[![](https://cran.r-project.org/package=SPSP)](https://img.shields.io/cran/v/SPSP?logo=R)
 [![CRAN checks](https://cranchecks.info/badges/summary/SPSP)](https://cran.r-project.org/web/checks/)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/SPSP?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/SPSP)
 [![](https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green)](https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green)
@@ -19,7 +19,7 @@ An implementation of the feature Selection procedure by Partitioning the entire 
 By utilizing the entire solution paths, this procedure can obtain better selection accuracy than 
 the commonly used approach of selecting only one tuning parameter based on existing criteria, 
 cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., & Wang, P. (2018) 
-<doi:10.1214/18-EJS1434>). It is more stable and accurate (low false positive and false negative
+https://doi.org/10.1214/18-EJS1434). It is more stable and accurate (low false positive and false negative
 rates) than other variable selection approaches. In addition, it can be flexibly coupled with 
 the solution paths of Lasso, adaptive Lasso, ridge regression,  and other penalized estimators.
 
