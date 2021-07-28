@@ -18,10 +18,10 @@ An implementation of the feature Selection procedure by Partitioning the entire 
 (namely SPSP) to identify the relevant features rather than using a single tuning parameter. 
 By utilizing the entire solution paths, this procedure can obtain better selection accuracy than 
 the commonly used approach of selecting only one tuning parameter based on existing criteria, 
-cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., & Wang, P. (2018)). It is 
-more stable and accurate (low false positive and false negative rates) than other variable 
-selection approaches. In addition, it can be flexibly coupled with the solution paths of Lasso, 
-adaptive Lasso, ridge regression,  and other penalized estimators.
+cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., & Wang, P. (2018) 
+<doi:10.1214/18-EJS1434>). It is more stable and accurate (low false positive and false negative
+rates) than other variable selection approaches. In addition, it can be flexibly coupled with 
+the solution paths of Lasso, adaptive Lasso, ridge regression,  and other penalized estimators.
 
 ## Installation
 

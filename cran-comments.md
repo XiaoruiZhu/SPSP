@@ -6,6 +6,12 @@
 ## R CMD check results
 There were no ERRORs, Notes, or WARNINGs. 
 
+* [Fixed] Please write references in the description of the DESCRIPTION file in the form authors (year) <doi:...> authors (year) <arXiv:...> authors (year, ISBN:...) or if those are not available: authors (year) <https:...> with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for auto-linking. (If you want to add a title as well please put it in quotes: "Title")
+
+* [Fixed] Please add \value to .Rd files regarding exported methods and explain the functions results in the documentation. 
+
+* [Fixed] Some code lines in examples are commented out in HighDim.Rd
+
 * [Fixed] checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>'
 

@@ -16,22 +16,22 @@
 #' data(HighDim)
 #'
 #' @examples
-#' # head(HighDim)
-#' # HighDim is generated from the following process:
-#' # n <- 200; p <- 500; sigma <- 0.5
-#' # beta <- rep(0, p); nonzero <- c(1, 2, 3); zero <- setdiff(1:p, nonzero)
-#' # beta[nonzero] <- c(3, 2, 1.5)
-#' # Sigma <- 0.3^(abs(outer(1:p,1:p,"-")))
-#' # library(MASS)
-#' # X <- mvrnorm(n, rep(0,p), Sigma)
-#' # error <- rnorm(n, 0, sigma)
 #' 
-#' # X <- apply(X, 2, scale) * sqrt(n)/sqrt(n-1)
-#' # error <- error - mean(error)
+#' # HighDim dataset is generated from the following process:
+#' n <- 200; p <- 500; sigma <- 0.5
+#' beta <- rep(0, p); nonzero <- c(1, 2, 3); zero <- setdiff(1:p, nonzero)
+#' beta[nonzero] <- c(3, 2, 1.5)
+#' Sigma <- 0.3^(abs(outer(1:p,1:p,"-")))
+#' library(MASS)
+#' X <- mvrnorm(n, rep(0,p), Sigma)
+#' error <- rnorm(n, 0, sigma)
 #' 
-#' # Y <- X %*% beta + error
-#' # HighDim <- data.frame(Y, X)
-#' # head(HighDim)
-#' # save(HighDim, file = "data/HighDim.rda", compress='xz')
+#' X <- apply(X, 2, scale) * sqrt(n)/sqrt(n-1)
+#' error <- error - mean(error)
+#' 
+#' Y <- X %*% beta + error
+#' HighDim <- data.frame(Y, X)
+#' head(HighDim)
+#' 
 #' 
 NULL

@@ -8,7 +8,10 @@
 \alias{ridge.glmnet}
 \alias{lasso.lars}
 \title{Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
-to obtain the solution paths for the SPSP algorithm}
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+\code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).}
 \usage{
 lasso.glmnet(x, y, family, standardize, intercept, ...)
 
@@ -36,9 +39,23 @@ a separate intercept or not.}
 
 \item{...}{Additional optional arguments.}
 }
+\value{
+An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
+
+An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
+
+An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
+
+An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
+
+An object of class \code{"lars"} is returned to provide solution paths for the SPSP algorithm.
+}
 \description{
 Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
-to obtain the solution paths for the SPSP algorithm
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+\code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).
 
 \code{lasso.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}}.
 
