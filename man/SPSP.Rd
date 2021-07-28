@@ -2,36 +2,93 @@
 % Please edit documentation in R/SPSP.R
 \name{SPSP}
 \alias{SPSP}
-\title{SPSP
-Select the informative variables by the SPSP algorithm (Selection by Partitioning the Solution Paths)}
+\title{Selection by partitioning the solution paths of Lasso, Adaptive Lasso, and Ridge penalized regression.}
 \usage{
-SPSP(x, y, BETA, family = gaussian, init = 1, R = NULL, standardize = FALSE)
+SPSP(
+  x,
+  y,
+  family = c("gaussian", "binomial"),
+  fitfun.SP = lasso.glmnet,
+  args.fitfun.SP = list(),
+  standardize = TRUE,
+  intercept = TRUE,
+  ...
+)
 }
 \arguments{
-\item{x}{independent variables as a matrix, of dimension nobs x nvars; each row is an observation vector.}
+\item{x}{independent variables as a matrix, of dimension n by p; each row is an observation vector with p variables.}
 
 \item{y}{response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
 For \code{family="binomial"} should be either a factor with two levels.}
 
-\item{BETA}{a p by k matrix, should be sparser and sparser, each column corresponds to the estimated coefficients vector
-for a given lambda, and lambda gets larger and larger.}
+\item{family}{either a character string representing one of the built-in families, or else a \code{glm} family object.}
 
-\item{family}{either a character string representing one of the built-in families, or else a glm() family object.}
+\item{fitfun.SP}{a function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
+x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}} 
+or \code{\link[lars]{lars}}. The function fit the model with lasso, adaptive lasso, or ridge regression to 
+return the solution path of the corresponding penalized likelihood approach.
+\describe{
+  \item{\code{lasso.glmnet}}{lasso selection from \code{\link[glmnet]{glmnet}}.}
+  \item{\code{adalasso.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation lasso method
+  to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.}
+  \item{\code{adalassoCV.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation adaptive 
+  lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.}
+  \item{\code{ridge.glmnet}}{use ridge regression to obtain the solution path.}
+  \item{\code{lasso.lars}}{use lasso selection in \code{\link[lars]{lars}} to obtain the solution path.}
+}}
 
-\item{init}{initial coefficients, starting from init-th estimator}
+\item{args.fitfun.SP}{a named list containing additional arguments that are passed to the fitting function;
+see also argument \code{args.fitfun.SP} in do.call.}
 
-\item{R}{sorted adjacent distances}
+\item{standardize}{whether need standardization.}
 
-\item{standardize}{whether need standardization}
+\item{intercept}{logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
+a separate intercept or not.}
+
+\item{...}{Additional optional arguments.}
 }
 \value{
+An object of class \code{"SPSP"} is a list containing at least the following components:
+\item{\code{beta_SPSP}}{the estimated coefficients of SPSP selected model;}
+\item{\code{S0}}{the estimated relevant sets;}
+\item{\code{nonzero}}{the selected covariates;}
+\item{\code{zero}}{the covariates that are not selected;}
+\item{\code{thres}}{the boundaries for abs(beta);}
+\item{\code{R}}{the sorted adjacent distances;}
+\item{\code{intercept}}{the estimated intercept when \code{intercept == T}.}
 
+This object has attribute contains: 
+
+\item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+\item{\code{family}}{the family of fitted object;}
+\item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
+\item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}
 }
 \description{
-SPSP
-Select the informative variables by the SPSP algorithm (Selection by Partitioning the Solution Paths)
+A user-friendly function to conduct the selection by Partitioning the Solution Paths (the SPSP algorithm). The
+user only needs to specify the independent variables matrix, response, family, and \code{fitfun.SP}.
 }
 \examples{
-data(HihgDim)
+data(HighDim)
+library(glmnet)
+# Use the high dimensional dataset (data(HighDim)) to test SPSP+Lasso and SPSP+AdaLasso:
+data(HighDim)  
+
+x <- as.matrix(HighDim[,-1])
+y <- HighDim[,1]
+
+spsp_lasso_1 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = lasso.glmnet,
+                           init = 1, standardize = FALSE, intercept = FALSE)
+
+head(spsp_lasso_1$nonzero)
+head(spsp_lasso_1$beta_SPSP)
+
+spsp_adalasso_5 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalasso.glmnet,
+                              init = 5, standardize = TRUE, intercept = FALSE)
+                              
+head(spsp_adalasso_5$nonzero)
+head(spsp_adalasso_5$beta_SPSP)
+
+
 
 }

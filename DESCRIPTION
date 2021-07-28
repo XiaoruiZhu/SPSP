@@ -1,30 +1,33 @@
 Package: SPSP
 Type: Package
 Title: Selection by Partitioning the Solution Paths
-Description: An implementation of the approach for feature selection based on the entire solution 
-            paths rather than the choice of a single tuning parameter, which significantly improves
-            the accuracy of the selection (Liu, Y., & Wang, P. (2018)). Since the SPSP approach is 
-            based on the solution paths. One can incorporate it with the solution paths of Lasso, 
-            adaptive Lasso, or ridge regression. This package provides the SPSP selection tool that
-            can incorporate the Lasso, adaptive Lasso, and ridge regression.
-Version: 0.0.1
+Description: An implementation of the feature Selection procedure by Partitioning the entire Solution Paths
+            (namely SPSP) to identify the relevant features rather than using a single tuning parameter. 
+            By utilizing the entire solution paths, this procedure can obtain better selection accuracy than 
+            the commonly used approach of selecting only one tuning parameter based on existing criteria, 
+            cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., & Wang, P. (2018)). It is 
+            more stable and accurate (low false positive and false negative rates) than other variable 
+            selection approaches. In addition, it can be flexibly coupled with the solution paths of Lasso, 
+            adaptive Lasso, ridge regression,  and other penalized estimators.
+Version: 0.1.0
 Date: 2021-07-25
-Authors@R: 
-  c(person(given = "Xiaorui (Jeremy)", family = "Zhu",
-           role = c("aut", "cre"),
-           email = "zhuxiaorui1989@gmail.com"),
-    person(given = "Yang", family = "Liu", 
-           role = c("aut"), 
-           email = "yliu23@fhcrc.org"),
-    person(given = "Peng", family = "Wang",
-           role = c("aut"),
-           email = "wangp9@ucmail.uc.edu"))
+Authors@R: c(
+  person(given = "Xiaorui (Jeremy)", family = "Zhu", email = "zhuxiaorui1989@gmail.com", role = c("aut", "cre")),
+  person(given = "Yang", family = "Liu", email = "yliu23@fhcrc.org", role = c("aut")), 
+  person(given = "Peng", family = "Wang", email = "wangp9@ucmail.uc.edu", role = c("aut"))
+  )
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
 URL: https://github.com/XiaoruiZhu/SPSP
 BugReports: https://github.com/XiaoruiZhu/SPSP/issues
 License: GPL (>= 2)
 Encoding: UTF-8
-Imports: Rcpp (>= 1.0.7)
+Depends:
+  R (>= 3.5.0),
+  glmnet, 
+  lars
+Imports: 
+  Rcpp (>= 1.0.7), 
+  MASS
 LinkingTo: Rcpp
 Suggests: 
     testthat (>= 3.0.0)

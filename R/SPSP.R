@@ -1,28 +1,223 @@
-#' SPSP
+#' Selection by Partitioning the Solution Paths
+#'
+#' An implementation of the feature Selection procedure by Partitioning the entire Solution Paths
+#' (namely SPSP) to identify the relevant features rather than using a single tuning parameter. 
+#' By utilizing the entire solution paths, this procedure can obtain better selection accuracy than 
+#' the commonly used approach of selecting only one tuning parameter based on existing criteria, 
+#' cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., & Wang, P. (2018)). It is 
+#' more stable and accurate (low false positive and false negative rates) than other variable 
+#' selection approaches. In addition, it can be flexibly coupled with the solution paths of Lasso, 
+#' adaptive Lasso, ridge regression, and other penalized estimators.
+#'
+#' @details This package includes two main functions and several functions (fitfun.SP) to obtains
+#' the solution paths. The \code{SPSP} function allows users to specify the penalized likelihood 
+#' approaches that will generate the solution paths for the SPSP procedure. Then this function 
+#' will automatically partitioning the entire solution paths. Its key idea is to classify variables
+#' as relevant or irrelevant at each tuning parameter and then to select all of the variables 
+#' which have been classified as relevant at least once. The \code{SPSP_step} purely apply the 
+#' partitioning step that needs the solution paths as the input. In addition, there are several 
+#' functions to obtain the solution paths. They can be used as an input of \code{fitfun.SP} argument.
 #' 
-#' Selecting the relevant predictors by Partitioning the Solution Paths (the SPSP algorithm)
+#'
+#' @docType package
+#'
+#' @author Xiaorui (Jeremy) Zhu, \email{zhuxiaorui1989@@gmail.com}
+#' 
+#' @references Liu, Y., & Wang, P. (2018). Selection by partitioning the solution paths. 
+#' \emph{Electronic Journal of Statistics}, 12(1), 1988-2017. <10.1214/18-EJS1434>
+#' 
+#' @name SPSP-package
+#' 
+#' @useDynLib SPSP
+#'
+NULL
+
+## Generic implementation of SPSP
+SPSP <- function(x, ...) {
+  UseMethod("SPSP", x)
+}
+
+#' Selection by partitioning the solution paths of Lasso, Adaptive Lasso, and Ridge penalized regression.
+#' 
+#' A user-friendly function to conduct the selection by Partitioning the Solution Paths (the SPSP algorithm). The
+#' user only needs to specify the independent variables matrix, response, family, and \code{fitfun.SP}. 
+#'
+#' @param x independent variables as a matrix, of dimension n by p; each row is an observation vector with p variables. 
+#' @param y response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
+#' For \code{family="binomial"} should be either a factor with two levels.
+#' 
+#' @param family either a character string representing one of the built-in families, or else a \code{glm} family object. 
+#' @param fitfun.SP a function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
+#' x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}} 
+#' or \code{\link[lars]{lars}}. The function fit the model with lasso, adaptive lasso, or ridge regression to 
+#' return the solution path of the corresponding penalized likelihood approach.
+#' \describe{
+#'   \item{\code{lasso.glmnet}}{lasso selection from \code{\link[glmnet]{glmnet}}.}
+#'   \item{\code{adalasso.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation lasso method
+#'   to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.}
+#'   \item{\code{adalassoCV.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation adaptive 
+#'   lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.}
+#'   \item{\code{ridge.glmnet}}{use ridge regression to obtain the solution path.}
+#'   \item{\code{lasso.lars}}{use lasso selection in \code{\link[lars]{lars}} to obtain the solution path.}
+#' } 
+#' @param standardize whether need standardization.
+#' @param intercept logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
+#' a separate intercept or not.
+#' @param args.fitfun.SP a named list containing additional arguments that are passed to the fitting function;
+#' see also argument \code{args.fitfun.SP} in do.call.
+#' @param ... Additional optional arguments.
+#'
+#' @importFrom Rcpp evalCpp
+#' @importFrom stats glm.fit coef 
+#' @importFrom glmnet glmnet cv.glmnet
+#' 
+#' @return An object of class \code{"SPSP"} is a list containing at least the following components:
+#' \item{\code{beta_SPSP}}{the estimated coefficients of SPSP selected model;}
+#' \item{\code{S0}}{the estimated relevant sets;}
+#' \item{\code{nonzero}}{the selected covariates;}
+#' \item{\code{zero}}{the covariates that are not selected;}
+#' \item{\code{thres}}{the boundaries for abs(beta);}
+#' \item{\code{R}}{the sorted adjacent distances;}
+#' \item{\code{intercept}}{the estimated intercept when \code{intercept == T}.}
+#' 
+#' This object has attribute contains: 
+#' 
+#' \item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+#' \item{\code{family}}{the family of fitted object;}
+#' \item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
+#' \item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}
+#' 
+#' 
+#' @export
+#'
+#' @examples
+#' data(HighDim)
+#' library(glmnet)
+#' # Use the high dimensional dataset (data(HighDim)) to test SPSP+Lasso and SPSP+AdaLasso:
+#' data(HighDim)  
+#' 
+#' x <- as.matrix(HighDim[,-1])
+#' y <- HighDim[,1]
+#' 
+#' spsp_lasso_1 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = lasso.glmnet,
+#'                            init = 1, standardize = FALSE, intercept = FALSE)
+#' 
+#' head(spsp_lasso_1$nonzero)
+#' head(spsp_lasso_1$beta_SPSP)
+#' 
+#' spsp_adalasso_5 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalasso.glmnet,
+#'                               init = 5, standardize = TRUE, intercept = FALSE)
+#'                               
+#' head(spsp_adalasso_5$nonzero)
+#' head(spsp_adalasso_5$beta_SPSP)
+#' 
+#' 
+#' 
+SPSP <- 
+  function(x, 
+           y, 
+           family = c("gaussian", "binomial"),
+           fitfun.SP = lasso.glmnet, 
+           args.fitfun.SP = list(), 
+           standardize = TRUE, 
+           intercept = TRUE, 
+           ...) {
+  
+  this.call <- match.call()
+  family <- match.arg(family)
+  
+  glmnet_T <- inherits(fitfun.SP, "glmnet")
+  
+  fit_mod_SP <- do.call(fitfun.SP, c(list(x = x, y = y, family = family, 
+                                          standardize = standardize, intercept = intercept),
+                                     args.fitfun.SP))
+  
+  # Conduct the SPSP step that use the above solution path to obtain relevant predictors.
+  SPSP_temp <- SPSP_step(x = x, y = y, BETA = fit_mod_SP$beta, standardize = standardize, intercept = intercept, ...)
+
+  # Assign attributes and class
+  attr(SPSP, "glmnet.fit") <- fit_mod_SP
+  attr(SPSP, "family") <- family
+  attr(SPSP, "fitfun.SP") <- fitfun.SP
+  attr(SPSP, "args.fitfun.SP") <- args.fitfun.SP
+  
+  class(SPSP) <- c("SPSP", class(fit_mod_SP), class(SPSP))
+  
+  return(SPSP_temp)
+}
+
+
+#' The selection step with the input of the solution paths.
+#' 
+#' A function to select the relevant predictors by partitioning the solution paths (the SPSP algorithm) 
+#' based on the user provided solution paths \code{BETA}. 
 #'
 #' @param x independent variables as a matrix, of dimension nobs x nvars; each row is an observation vector. 
 #' @param y response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
 #' For \code{family="binomial"} should be either a factor with two levels.
 #' 
-#' @param BETA a p by k matrix, should be sparser and sparser, each column corresponds to the estimated coefficients vector
-#' for a given lambda, and lambda gets larger and larger.
 #' @param family either a character string representing one of the built-in families, or else a glm() family object. 
-#' @param init initial coefficients, starting from init-th estimator 
-#' @param R sorted adjacent distances 
-#' @param standardize  whether need standardization
-#'
-#' @importFrom Rcpp evalCpp
+#' @param BETA the solution paths obtained from a prespecified fitting step \code{fitfun.SP = lasso.glmnet} etc. It must be 
+#' a p by k matrix, should be thicker and thicker, each column corresponds to a lambda, and lambda gets smaller and smaller.
+#' It is just the returned value \code{beta} from a \code{glmnet} object. 
+#' @param standardize whether need standardization.
+#' @param intercept logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
+#' a separate intercept or not.
+#' @param init initial coefficients, starting from init-th estimator of the solution paths. The default is 1. 
+#' @param R sorted adjacent distances, default is NULL. Will be calculated inside.
+#' @param ... Additional optional arguments.
 #' 
-#' @return
+#'
+#' @examples 
+#' data(HighDim)
+#' library(glmnet)
+#' 
+#' x <- as.matrix(HighDim[,-1])
+#' y <- HighDim[,1]
+#' 
+#' lasso_fit <- glmnet(x = x, y = y, alpha = 1, intercept = FALSE)
+#' 
+#' # SPSP+Lasso method
+#' K <- dim(lasso_fit$beta)[2]
+#' LBETA <- as.matrix(lasso_fit$beta)
+#' 
+#' spsp_lasso_1 <- SPSP_step(x = x, y = y, BETA = LBETA, 
+#'                           init = 1, standardize = FALSE, intercept = FALSE)
+#' head(spsp_lasso_1$nonzero)
+#' head(spsp_lasso_1$beta_SPSP)
+#' 
+#' @return A list containing at least the following components:
+#' \item{\code{beta_SPSP}}{the estimated coefficients of SPSP selected model;}
+#' \item{\code{S0}}{the estimated relevant sets;}
+#' \item{\code{nonzero}}{the selected covariates;}
+#' \item{\code{zero}}{the covariates that are not selected;}
+#' \item{\code{thres}}{the boundaries for abs(beta);}
+#' \item{\code{R}}{the sorted adjacent distances;}
+#' \item{\code{intercept}}{the estimated intercept when \code{intercept == T}.}
+#' 
+#' This object has attribute contains: 
+#' 
+#' \item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+#' \item{\code{family}}{the family of fitted object;}
+#' \item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
+#' \item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}
+#' 
+#' 
 #' @export
-#'
-#' @examples
-#' data(HihgDim)
 #' 
-#' @useDynLib SPSP, .registration=TRUE
-SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALSE){
+SPSP_step <- 
+  function(x, 
+           y, 
+           family = c("gaussian", "binomial"), 
+           BETA,
+           standardize=TRUE,
+           intercept = TRUE, 
+           init = 1, 
+           R = NULL, 
+           ...) {
+  
+  this.call <- match.call()
+  family <- match.arg(family)
   
   if (is.character(family)) 
     family <- get(family, mode = "function", envir = parent.frame())
@@ -35,16 +230,19 @@ SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALS
   
   n <- dim(x)[1] # size
   p <- dim(x)[2] # dimension
-  BETA <- as.matrix(BETA) 
-  # BETA should be a p by k matrix;should be sparser and sparser
-  # each column corrspends to a lambda, and lambda gets larger and larger
+  
+  K <- dim(BETA)[2]
+  BETA <- as.matrix(BETA[,K:1]) 
+  # BETA for the following should be a p by k matrix;should be sparser and sparser
+  # each column corresponds to a lambda, and lambda gets larger and larger
+  
   K <- dim(BETA)[2] # the number of the tuning parameter lambda
   
-  if(is.null(R)){
+  if (is.null(R)) {
     #### select the default the tuning parameter if it is not given
-    gap0 <- sort(diff(c(0,sort(abs(BETA[,init])))),decreasing = TRUE)
+    gap0 <- sort(diff(c(0,sort(abs(BETA[,init])))), decreasing = TRUE)
     # sorted adjacent distances 
-    R <- ifelse(gap0[2]!=0,as.numeric(gap0[1]/gap0[2]),as.numeric(gap0[1]))   
+    R <- ifelse(gap0[2]!=0, as.numeric(gap0[1]/gap0[2]), as.numeric(gap0[1]))   
   }
   
   ### only consider the rows with at least one non-zero beta
@@ -57,30 +255,30 @@ SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALS
   
   # the initial values; 
   thres_tmp <- max(abs(BETA[,1]))
-  S0_tmp <- which(abs(BETA[,1])>thres_tmp)
-  S0c_tmp <- which(abs(BETA[,1])<=thres_tmp)
+  S0_tmp <- which(abs(BETA[,1]) > thres_tmp)
+  S0c_tmp <- which(abs(BETA[,1])  <=  thres_tmp)
   
   # loop for the update
-  if(K2>=1){
-    for (k in 1:K2){
+  if (K2>=1) {
+    for (k in 1:K2) {
       
       beta_abs <- abs(BETA[,k])
       beta_sort <- sort(beta_abs)
       
       # update the initials
-      thres[k] <- ifelse(length(S0c_tmp)>=1,max(beta_abs[S0c_tmp]),0)
-      S0_tmp <- which(abs(BETA[,k])>thres[k])
-      S0c_tmp <- which(abs(BETA[,k])<=thres[k])
+      thres[k] <- ifelse(length(S0c_tmp) >=1,max(beta_abs[S0c_tmp]),0)
+      S0_tmp <- which(abs(BETA[,k]) >thres[k])
+      S0c_tmp <- which(abs(BETA[,k]) <= thres[k])
       
       S0[[k]] <- S0_tmp
       S0c[[k]] <- S0c_tmp
       
-      if(length(S0c[[k]])>=1){
+      if (length(S0c[[k]]) >=1) {
         
         gap <- diff(c(0,beta_sort))
         
         # the distance between current relevant and irrelevant sets
-        gap_10 <- ifelse(length(S0c_tmp)==p,0,gap[length(S0c_tmp)+1])
+        gap_10 <- ifelse(length(S0c_tmp) == p,0,gap[length(S0c_tmp)+1])
         
         # gap for the current irrelevant set: S0c_tmp
         gap_0 <- gap[1:length(S0c_tmp)]
@@ -89,12 +287,12 @@ SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALS
         
         gap_02 <- ifelse(o1>1,max(gap[1:(o1-1)]),0)
         
-        if(gap_10 <= R * gap_01 & gap_01 >= R*gap_02 ){
+        if (gap_10  <=  R * gap_01 & gap_01 >= R*gap_02 ) {
           
           thres[k] <- ifelse(o1>1,beta_sort[o1-1],0)
           
-          S0_tmp <- which(abs(BETA[,k])>thres[k])
-          S0c_tmp <- which(abs(BETA[,k])<=thres[k])
+          S0_tmp <- which(abs(BETA[,k]) > thres[k])
+          S0c_tmp <- which(abs(BETA[,k]) <= thres[k])
           
           S0[[k]] <- S0_tmp
           S0c[[k]] <- S0c_tmp
@@ -102,31 +300,28 @@ SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALS
         }
       }
       
-      
     }
   }
   
-  
   index <- rep(1,p)
   
-  for(i in 1:p){
-    if(all(abs(BETA[i,1:K2])<=thres)) index[i] <- 0
+  for(i in 1:p) {
+    if (all(abs(BETA[i,1:K2]) <= thres)) index[i] <- 0
   }
   
-  
-  nz <- which(index==1)
-  z <- which(index==0)
+  nz <- which(index == 1)
+  z <- which(index == 0)
   beta_SPSP <- rep(0,p)
   
-  if(standardize==FALSE){
+  if (standardize == FALSE) {
     intercept <- 0
-    if(length(nz)>=1){
+    if (length(nz) >= 1) {
       xc <- x[,nz]
       
-      if(length(nz)<=n){
+      if (length(nz) <= n) {
         # betac <- .lm.fit(y~xc-1)$coefficients
         betac <- glm.fit(y = y, x = xc, intercept = FALSE, family = family)$coefficients
-      }else{ # change all as ridge reg to provide final coefficients
+      } else { # change all as ridge reg to provide final coefficients
         # betac <- solve(t(xc)%*%xc+0.001*diag(length(nz)))%*%t(xc)%*%y # Very slow
         betac <- solve((crossprod(xc) + 0.001*diag(length(nz))), crossprod(xc, y))
         # betac <- crossprod(solve(crossprod(xc)+0.001*diag(length(nz))), crossprod(xc,y)) # Faster
@@ -134,17 +329,17 @@ SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALS
       
       beta_SPSP[nz] <- betac  
     }
-  }else if(standardize==TRUE){
-    if(length(nz)>=1){
+  } else if (standardize == TRUE) {
+    if (length(nz) >= 1) {
       xc <- x[,nz]
       xc1 <- cbind(1,xc)
-      if(length(nz)<n){
+      if (length(nz) < n) {
         # betac1 <- (.lm.fit(y~xc1-1)$coefficients)
         betac1 <- glm.fit(y = y, x = xc1, intercept = FALSE, family = family)$coefficients
         
         intercept <- betac1[1]
         betac <- betac1[-1]
-      }else{ # change all as ridge reg to provide final coefficients
+      } else { # change all as ridge reg to provide final coefficients
         # betac1 <- solve(t(xc1)%*%xc1+0.001*diag(length(nz)+1))%*%t(xc1)%*%y # Very slow
         # betac1 <- crossprod(solve(crossprod(xc1)+0.001*diag(length(nz)+1)), crossprod(xc1,y)) # Faster
         betac1 <- solve((crossprod(xc1) + 0.001*diag(length(nz))), crossprod(xc1, y)) # Fastest
@@ -153,17 +348,34 @@ SPSP <- function(x, y, BETA, family = gaussian, init=1, R=NULL, standardize=FALS
       }
       
       beta_SPSP[nz] <- betac  
-    }else{
+    } else {
       # intercept <- .lm.fit(y~1)$coefficients[1]
       intercept <- glm.fit(y = y, x = rep(1,n), intercept = TRUE, family = family)$coefficients
     }
-  }else{
-    print("Please specify stardardize==TRUE/FALSE.")
+  } else {
+    print("Please specify stardardize == TRUE/FALSE.")
   }
   
+  # Change the display and format of some results
+  names(beta_SPSP) <- colnames(x)
+  nz_name <- colnames(x)[nz]
+  z_name <- colnames(x)[z]
+  names(intercept) <- "(Intercept)"
   
-  list(beta_SPSP = beta_SPSP, S0 = S0, thres = thres,
-       nonzero=nz, zero=z, R=R, intercept=as.numeric(intercept))
+  SPSP <- list(beta_SPSP = beta_SPSP, 
+               S0 = S0,
+               nonzero = nz_name, zero = z_name,
+               thres = thres, R = R, 
+               intercept = intercept)
+  
+  attr(SPSP, "thres") <- thres ## boundaries for abs(beta)
+  attr(SPSP, "R") <- R ## sorted adjacent distances
+  
+  attr(SPSP, "y") <- y
+  attr(SPSP, "x") <- x
+  attr(SPSP, "init") <- init
+  
+  return(SPSP)
 }
 
 

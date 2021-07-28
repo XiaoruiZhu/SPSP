@@ -1,0 +1,4 @@
+destination: docs
+template:
+  params:
+    ganalytics: G-SLFHGL1KH3

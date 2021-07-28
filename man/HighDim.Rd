@@ -14,7 +14,8 @@ The covariates are correlated with AR structure (rho=0.3). The error term is nor
 zero mean and sd equals to 0.5.
 }
 \examples{
-head(HighDim)
+# head(HighDim)
+# HighDim is generated from the following process:
 # n <- 200; p <- 500; sigma <- 0.5
 # beta <- rep(0, p); nonzero <- c(1, 2, 3); zero <- setdiff(1:p, nonzero)
 # beta[nonzero] <- c(3, 2, 1.5)
