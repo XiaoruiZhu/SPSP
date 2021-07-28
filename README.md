@@ -3,7 +3,7 @@
 <!-- badges: start -->
 
 [![](https://www.r-pkg.org/badges/version/SPSP)](https://www.r-pkg.org/badges/version/SPSP)
-[![CRAN checks](https://cranchecks.info/badges/summary/SPSP)](https://cran.r-project.org/web/checks/check_results_SPSP.html)
+[![CRAN checks](https://cranchecks.info/badges/summary/SPSP)](https://cran.r-project.org/web/checks/)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/SPSP?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/SPSP)
 [![](https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green)](https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green)
 [![](https://cranlogs.r-pkg.org/badges/last-week/SPSP?color=yellow)](https://cranlogs.r-pkg.org/badges/last-week/SPSP?color=yellow)

@@ -1,6 +1,9 @@
+.gitignore
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^CRAN-RELEASE$
+^cran-comments\.md$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^CRAN-RELEASE$
+
