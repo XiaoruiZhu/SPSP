@@ -149,7 +149,10 @@
           <p><code><a href="Fitting-Functions.html">lasso.glmnet()</a></code> <code><a href="Fitting-Functions.html">adalasso.glmnet()</a></code> <code><a href="Fitting-Functions.html">adalassoCV.glmnet()</a></code> <code><a href="Fitting-Functions.html">ridge.glmnet()</a></code> <code><a href="Fitting-Functions.html">lasso.lars()</a></code> </p>
         </td>
         <td><p>Four Fitting-Functions that can be used as an input of <code>fitfun.SP</code> argument 
-to obtain the solution paths for the SPSP algorithm</p></td>
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+<code>glmnet</code>, <code>lars</code> (or <code>SCAD</code>, <code>MCP</code> in the future).</p></td>
       </tr><tr>
         
         <td>

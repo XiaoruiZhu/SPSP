@@ -29,5 +29,6 @@ Liu, Y., & Wang, P. (2018). Selection by partitioning the solution paths.
 \emph{Electronic Journal of Statistics}, 12(1), 1988-2017. <10.1214/18-EJS1434>
 }
 \author{
-Xiaorui (Jeremy) Zhu, \email{zhuxiaorui1989@gmail.com}
+Xiaorui (Jeremy) Zhu, \email{zhuxiaorui1989@gmail.com}, \cr Yang Liu, \email{yliu23@fhcrc.org}, \cr
+Peng Wang, \email{wangp9@ucmail.uc.edu}
 }

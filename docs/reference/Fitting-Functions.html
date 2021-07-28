@@ -7,7 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Four Fitting-Functions that can be used as an input of fitfun.SP argument 
-to obtain the solution paths for the SPSP algorithm — Fitting-Functions • SPSP</title>
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+glmnet, lars (or SCAD, MCP in the future). — Fitting-Functions • SPSP</title>
 
 
 <!-- jquery -->
@@ -41,9 +44,15 @@ to obtain the solution paths for the SPSP algorithm — Fitting-Functions • SP
 
 
 <meta property="og:title" content="Four Fitting-Functions that can be used as an input of fitfun.SP argument 
-to obtain the solution paths for the SPSP algorithm — Fitting-Functions" />
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+glmnet, lars (or SCAD, MCP in the future). — Fitting-Functions" />
 <meta property="og:description" content="Four Fitting-Functions that can be used as an input of fitfun.SP argument 
-to obtain the solution paths for the SPSP algorithm
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+glmnet, lars (or SCAD, MCP in the future).
 lasso.glmnet uses lasso selection from glmnet.
 adalasso.glmnet the function to conduct the adaptive lasso selection using the lambda.1se from cross-validation lasso method
 to obtain initial coefficients. It uses package glmnet.
@@ -132,14 +141,20 @@ lasso.lars uses lasso selection in lars to obtain the solution path." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Four Fitting-Functions that can be used as an input of <code>fitfun.SP</code> argument 
-to obtain the solution paths for the SPSP algorithm</h1>
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+<code>glmnet</code>, <code>lars</code> (or <code>SCAD</code>, <code>MCP</code> in the future).</h1>
     <small class="dont-index">Source: <a href='https://github.com/XiaoruiZhu/SPSP/blob/master/R/fitfun.SP.R'><code>R/fitfun.SP.R</code></a></small>
     <div class="hidden name"><code>Fitting-Functions.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Four Fitting-Functions that can be used as an input of <code>fitfun.SP</code> argument 
-to obtain the solution paths for the SPSP algorithm</p>
+to obtain the solution paths for the SPSP algorithm. The users can also customize a
+function to generate the solution paths. As long as the customized function take 
+arguments x, y, family, standardize, and intercept, and return an object of class 
+<code>glmnet</code>, <code>lars</code> (or <code>SCAD</code>, <code>MCP</code> in the future).</p>
 <p><code>lasso.glmnet</code> uses lasso selection from <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p>
 <p><code>adalasso.glmnet</code> the function to conduct the adaptive lasso selection using the <code>lambda.1se</code> from cross-validation lasso method
 to obtain initial coefficients. It uses package <code><a href='https://glmnet.stanford.edu/reference/glmnet.html'>glmnet</a></code>.</p>
@@ -191,6 +206,13 @@ a separate intercept or not.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+<p>An object of class <code>"lars"</code> is returned to provide solution paths for the SPSP algorithm.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
