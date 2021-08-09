@@ -27,10 +27,10 @@ Depends:
   glmnet, 
   lars
 Imports: 
-  Rcpp (>= 1.0.7), 
-  MASS
+  Rcpp (>= 1.0.7)
 LinkingTo: Rcpp
 Suggests: 
-    testthat (>= 3.0.0)
+  testthat (>= 3.0.0), 
+  MASS
 Config/testthat/edition: 3
 RoxygenNote: 7.1.1
