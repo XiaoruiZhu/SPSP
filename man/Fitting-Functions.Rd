@@ -24,18 +24,18 @@ ridge.glmnet(x, y, family, standardize, intercept, ...)
 lasso.lars(x, y, family, standardize, intercept, ...)
 }
 \arguments{
-\item{x}{x independent variables as a matrix, of dimension nobs x nvars; each row is an observation vector.}
+\item{x}{a matrix of the independent variables. The dimensions are (nobs) and (nvars); each row is an observation vector.}
 
-\item{y}{response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
+\item{y}{Response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
 For \code{family="binomial"} should be either a factor with two levels.}
 
-\item{family}{family is either a character string representing one of the built-in families, or 
-a \code{glm} family object.}
+\item{family}{Response type. Either a character string representing one of the built-in families,
+or else a glm() family object.}
 
-\item{standardize}{standardize whether need standardization.}
+\item{standardize}{logical argument. Should conduct standardization before the estimation? Default is TRUE.}
 
 \item{intercept}{logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
-a separate intercept or not.}
+a separate intercept or not. Default is TRUE.}
 
 \item{...}{Additional optional arguments.}
 }

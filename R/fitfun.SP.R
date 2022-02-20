@@ -23,15 +23,15 @@ NULL
 
 #' \code{lasso.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}}.
 #'
-#' @param x x independent variables as a matrix, of dimension nobs x nvars; each row is an observation vector. 
-#' @param y response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
+#' @param x a matrix of the independent variables. The dimensions are (nobs) and (nvars); each row is an observation vector. 
+#' @param y Response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
 #' For \code{family="binomial"} should be either a factor with two levels.
 #' 
-#' @param family family is either a character string representing one of the built-in families, or 
-#' a \code{glm} family object. 
-#' @param standardize standardize whether need standardization.
+#' @param family Response type. Either a character string representing one of the built-in families,
+#' or else a glm() family object.
+#' @param standardize logical argument. Should conduct standardization before the estimation? Default is TRUE.
 #' @param intercept logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
-#' a separate intercept or not.
+#' a separate intercept or not. Default is TRUE.
 #' @param ... Additional optional arguments.
 #' 
 #' @return An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm. 
@@ -71,6 +71,12 @@ adalasso.glmnet <- function(x,
                             family,
                             standardize, 
                             intercept, ...) {
+  # Extract all optional arguments for further use. 
+  args <- list(...)
+  for (name in names(args) ) {
+    assign(name, args[[name]])
+  }
+  
   if (!requireNamespace("glmnet", quietly = TRUE)) 
     stop("Package ", sQuote("glmnet"), " needed but not available")
   
@@ -82,17 +88,34 @@ adalasso.glmnet <- function(x,
                         alpha = 0,
                         intercept = intercept, standardize = standardize, ...)
     
-    first_coef <- coef(cv_fl1, s = cv_fl1$lambda.1se)[-1]
+    first_coef <- coef(cv_fl1, s = cv_fl1$lambda.1se)
+    first_beta <- first_coef[-1]
     
   } else {
-    # first_coef <- solve(t(x)%*%x)%*%t(x)%*%y
-    first_coef <- crossprod(solve(crossprod(x)), crossprod(x,y))
+    if (intercept) {
+      x1 <- as.matrix(cbind(1, x))
+      # first_coef <- solve(t(x)%*%x)%*%t(x)%*%y
+      first_coef <- crossprod(solve(crossprod(x1)), crossprod(x1,y))
+      first_beta <- first_coef[-1]
+    } else {
+      x1 <- as.matrix(x)
+      # first_coef <- solve(t(x)%*%x)%*%t(x)%*%y
+      first_coef <- crossprod(solve(crossprod(x1)), crossprod(x1,y))
+      first_beta <- first_coef
+    }
   }
-  penalty_factor <- abs(first_coef + 1/sqrt(n))^(-1)
   
-  fit_sp <- glmnet(x = x, y = y, penalty.factor = penalty_factor, 
-                   family = family, alpha=1, intercept = intercept, standardize = standardize, ...)
+  # If the penalty.factor are given, then adjust the penalties.
   
+  if (exists("penalty.factor")) {
+    penalty.factor <- abs(first_beta + 1/sqrt(n))^(-1) * penalty.factor
+  } else {
+    penalty.factor <- abs(first_beta + 1/sqrt(n))^(-1)
+  }
+  
+  fit_sp <- glmnet(x = x, y = y, #penalty.factor = penalty.factor, 
+                   family = family, alpha=1, 
+                   intercept = intercept, standardize = standardize, ...)
   
   return(fit_sp)
 }
@@ -113,6 +136,11 @@ adalassoCV.glmnet <- function(x,
                               family,
                               standardize, 
                               intercept, ...) {
+  # Extract all optional arguments for further use. 
+  args <- list(...)
+  for (name in names(args) ) {
+    assign(name, args[[name]])
+  }
   
   if (!requireNamespace("glmnet", quietly = TRUE)) 
     stop("Package ", sQuote("glmnet"), " needed but not available")
@@ -127,24 +155,41 @@ adalassoCV.glmnet <- function(x,
     # use lasso from cv.glmnet to find initial lambda
     cv_fl1 <- cv.glmnet(x = x, y = y, family = family,
                         alpha=1, intercept = intercept, standardize = standardize, ...)
-    lambda_tem <- cv_fl1$lambda.min # use this as prespecified lambda
+    lambda_tem <- cv_fl1$lambda.1se # use this as prespecified lambda
     first_coef <- fl1$beta[,which.min(abs(fl1$lambda-lambda_tem))]
     
   } else {
     # first_coef <- solve(t(x)%*%x)%*%t(x)%*%y
     first_coef <- crossprod(solve(crossprod(x)), crossprod(x,y))
   }
-  penalty_factor <- abs(first_coef + 1/sqrt(n))^(-1)
   
-  fit_cv_ada <- cv.glmnet(x = x, y = y, penalty.factor = penalty_factor, 
+  # If the penalty.factor are given, then adjust the penalties.
+  if (exists("penalty.factor")) {
+    penalty.factor <- abs(first_coef + 1/sqrt(n))^(-1) * penalty.factor
+  } else {
+    penalty.factor <- abs(first_coef + 1/sqrt(n))^(-1)
+  }
+  
+  fit_cv_ada <- cv.glmnet(x = x, y = y, # penalty.factor = penalty.factor, 
                    family = family, alpha=1, intercept = intercept, standardize = standardize, ...) 
   
-  first_ada_coef <- coef(fit_cv_ada, s=fit_cv_ada$lambda.1se)[-1]
+  first_ada_coef <- coef(fit_cv_ada, s=fit_cv_ada$lambda.1se)
+  first_ada_beta <- first_ada_coef[-1]
   
-  penalty_factor_ada <- abs(first_ada_coef + 1/sqrt(n))^(-1)
   
-  fit_sp <- glmnet(x = x, y = y, penalty.factor = penalty_factor_ada, 
-                   family = family, alpha=1, intercept = intercept, standardize = standardize, ...)
+  # If the penalty.factor are given, then adjust the penalties.
+  if (exists("penalty.factor")) {
+    penalty.factor <- abs(first_ada_beta + 1/sqrt(n))^(-1) * penalty.factor
+  } else {
+    penalty.factor <- abs(first_ada_beta + 1/sqrt(n))^(-1)
+  }
+  
+  fit_sp <- glmnet(x = x, y = y, # penalty.factor = penalty.factor, 
+                   family = family, alpha=1, 
+                   intercept = intercept, standardize = standardize, ...)
+  
+  # Store the first adalasso coefficient obtained from the adalasso.CV procedure. 
+  fit_sp$first_ada_coef <- first_ada_coef
   
   return(fit_sp)
 }

@@ -43,12 +43,13 @@ SPSP <- function(x, ...) {
 #' A user-friendly function to conduct the selection by Partitioning the Solution Paths (the SPSP algorithm). The
 #' user only needs to specify the independent variables matrix, response, family, and \code{fitfun.SP}. 
 #'
-#' @param x independent variables as a matrix, of dimension n by p; each row is an observation vector with p variables. 
-#' @param y response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
+#' @param x A matrix with all independent variables, of dimension n by p; each row is an observation vector with p variables. 
+#' @param y Response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
 #' For \code{family="binomial"} should be either a factor with two levels.
 #' 
-#' @param family either a character string representing one of the built-in families, or else a \code{glm} family object. 
-#' @param fitfun.SP a function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
+#' @param family Response type. Either a character string representing one of the built-in families,
+#' or else a glm() family object.
+#' @param fitfun.SP A function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
 #' x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}} 
 #' or \code{\link[lars]{lars}}. The function fit the model with lasso, adaptive lasso, or ridge regression to 
 #' return the solution path of the corresponding penalized likelihood approach.
@@ -61,10 +62,10 @@ SPSP <- function(x, ...) {
 #'   \item{\code{ridge.glmnet}}{use ridge regression to obtain the solution path.}
 #'   \item{\code{lasso.lars}}{use lasso selection in \code{\link[lars]{lars}} to obtain the solution path.}
 #' } 
-#' @param standardize whether need standardization.
+#' @param standardize logical argument. Should conduct standardization before the estimation? Default is TRUE.
 #' @param intercept logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
-#' a separate intercept or not.
-#' @param args.fitfun.SP a named list containing additional arguments that are passed to the fitting function;
+#' a separate intercept or not. Default is TRUE.
+#' @param args.fitfun.SP A named list containing additional arguments that are passed to the fitting function;
 #' see also argument \code{args.fitfun.SP} in do.call.
 #' @param ... Additional optional arguments.
 #'
@@ -137,12 +138,12 @@ SPSP <-
   SPSP_temp <- SPSP_step(x = x, y = y, BETA = fit_mod_SP$beta, standardize = standardize, intercept = intercept, ...)
 
   # Assign attributes and class
-  attr(SPSP, "glmnet.fit") <- fit_mod_SP
-  attr(SPSP, "family") <- family
-  attr(SPSP, "fitfun.SP") <- fitfun.SP
-  attr(SPSP, "args.fitfun.SP") <- args.fitfun.SP
+  attr(SPSP_temp, "glmnet.fit") <- fit_mod_SP
+  attr(SPSP_temp, "family") <- family
+  attr(SPSP_temp, "fitfun.SP") <- fitfun.SP
+  attr(SPSP_temp, "args.fitfun.SP") <- args.fitfun.SP
   
-  class(SPSP) <- c("SPSP", class(fit_mod_SP), class(SPSP))
+  class(SPSP_temp) <- c("SPSP", class(fit_mod_SP), class(SPSP_temp))
   
   return(SPSP_temp)
 }
@@ -228,6 +229,15 @@ SPSP_step <-
     print(family)
     stop("'family' not recognized")
   }
+  if (!is.logical(intercept)) 
+    stop("Please specify intercept == TRUE/FALSE.")
+  if (!is.logical(standardize)) 
+    stop("Please specify stardardize == TRUE/FALSE.")
+  
+  
+  if (standardize == TRUE) { # standardize == TRUE
+    x <- scale(x, center = TRUE, scale = TRUE)
+  }
   
   n <- dim(x)[1] # size
   p <- dim(x)[2] # dimension
@@ -255,45 +265,45 @@ SPSP_step <-
   S0c <- list() # estimated irrelevant sets
   
   # the initial values; 
-  thres_tmp <- max(abs(BETA[,1]))
-  S0_tmp <- which(abs(BETA[,1]) > thres_tmp)
-  S0c_tmp <- which(abs(BETA[,1])  <=  thres_tmp)
+  thres_tmp <- max(abs(BETA[, 1]))
+  S0_tmp <- which(abs(BETA[, 1]) > thres_tmp)
+  S0c_tmp <- which(abs(BETA[, 1])  <=  thres_tmp)
   
   # loop for the update
-  if (K2>=1) {
+  if (K2 >= 1) {
     for (k in 1:K2) {
       
-      beta_abs <- abs(BETA[,k])
+      beta_abs <- abs(BETA[, k])
       beta_sort <- sort(beta_abs)
       
       # update the initials
-      thres[k] <- ifelse(length(S0c_tmp) >=1,max(beta_abs[S0c_tmp]),0)
-      S0_tmp <- which(abs(BETA[,k]) >thres[k])
-      S0c_tmp <- which(abs(BETA[,k]) <= thres[k])
+      thres[k] <- ifelse(length(S0c_tmp) >= 1 ,max(beta_abs[S0c_tmp]),0)
+      S0_tmp <- which(abs(BETA[, k]) > thres[k])
+      S0c_tmp <- which(abs(BETA[, k]) <= thres[k])
       
       S0[[k]] <- S0_tmp
       S0c[[k]] <- S0c_tmp
       
       if (length(S0c[[k]]) >=1) {
         
-        gap <- diff(c(0,beta_sort))
+        gap <- diff(c(0, beta_sort))
         
         # the distance between current relevant and irrelevant sets
-        gap_10 <- ifelse(length(S0c_tmp) == p,0,gap[length(S0c_tmp)+1])
+        gap_10 <- ifelse(length(S0c_tmp) == p, 0, gap[length(S0c_tmp) + 1])
         
         # gap for the current irrelevant set: S0c_tmp
         gap_0 <- gap[1:length(S0c_tmp)]
         o1 <- which.max(gap_0)
         gap_01 <- max(gap_0)
         
-        gap_02 <- ifelse(o1>1,max(gap[1:(o1-1)]),0)
+        gap_02 <- ifelse(o1>1, max(gap[1:(o1-1)]), 0)
         
-        if (gap_10  <=  R * gap_01 & gap_01 >= R*gap_02 ) {
+        if (gap_10  <=  R * gap_01 & gap_01 >= R * gap_02 ) {
           
-          thres[k] <- ifelse(o1>1,beta_sort[o1-1],0)
+          thres[k] <- ifelse(o1>1, beta_sort[o1-1], 0)
           
-          S0_tmp <- which(abs(BETA[,k]) > thres[k])
-          S0c_tmp <- which(abs(BETA[,k]) <= thres[k])
+          S0_tmp <- which(abs(BETA[, k]) > thres[k])
+          S0c_tmp <- which(abs(BETA[, k]) <= thres[k])
           
           S0[[k]] <- S0_tmp
           S0c[[k]] <- S0c_tmp
@@ -307,67 +317,65 @@ SPSP_step <-
   index <- rep(1,p)
   
   for(i in 1:p) {
-    if (all(abs(BETA[i,1:K2]) <= thres)) index[i] <- 0
+    if (all(abs(BETA[i, 1:K2]) <= thres)) index[i] <- 0
   }
   
   nz <- which(index == 1)
   z <- which(index == 0)
-  beta_SPSP <- rep(0,p)
+  beta_SPSP <- rep(0, p)
   
-  if (standardize == FALSE) {
-    intercept <- 0
+  if (intercept == TRUE) { # intercept == TRUE
     if (length(nz) >= 1) {
-      xc <- x[,nz]
+      xc <- x[, nz]
+      xc1 <- cbind(1, xc)
+      if (length(nz) < n) { # if p < n
+        betac1 <- glm.fit(y = y, x = xc1, intercept = FALSE, family = family)$coefficients
+      } else { # # if p >= n, use ridge reg to provide final coefficients
+        # betac1 <- solve(t(xc1)%*%xc1+0.001*diag(length(nz)+1))%*%t(xc1)%*%y # Very slow
+        # betac1 <- crossprod(solve(crossprod(xc1)+0.001*diag(length(nz)+1)), crossprod(xc1,y)) # Faster
+        betac1 <- solve((crossprod(xc1) + 0.001 * diag(length(nz) + 1)), crossprod(xc1, y)) # Fastest
+      }
+      intercept_est <- betac1[1]
+      betac <- betac1[-1]
       
-      if (length(nz) <= n) {
-        # betac <- .lm.fit(y~xc-1)$coefficients
+      beta_SPSP[nz] <- betac  
+    } else { # if no variable is selected and intercept == TRUE, run a model with intercept only
+      intercept_est <- glm.fit(y = y, x = rep(1, n), intercept = FALSE, family = family)$coefficients
+      betac <- NA
+    } 
+    
+  } else { # intercept == FALSE
+    intercept_est <- NA
+    if (length(nz) >= 1) {
+      xc <- x[, nz]
+      
+      if (length(nz) < n) {
         betac <- glm.fit(y = y, x = xc, intercept = FALSE, family = family)$coefficients
       } else { # change all as ridge reg to provide final coefficients
         # betac <- solve(t(xc)%*%xc+0.001*diag(length(nz)))%*%t(xc)%*%y # Very slow
-        betac <- solve((crossprod(xc) + 0.001*diag(length(nz))), crossprod(xc, y))
         # betac <- crossprod(solve(crossprod(xc)+0.001*diag(length(nz))), crossprod(xc,y)) # Faster
+        betac <- solve((crossprod(xc) + 0.001*diag(length(nz))), crossprod(xc, y)) # Fastest
       }
       
       beta_SPSP[nz] <- betac  
     }
-  } else if (standardize == TRUE) {
-    if (length(nz) >= 1) {
-      xc <- x[,nz]
-      xc1 <- cbind(1,xc)
-      if (length(nz) < n) {
-        # betac1 <- (.lm.fit(y~xc1-1)$coefficients)
-        betac1 <- glm.fit(y = y, x = xc1, intercept = FALSE, family = family)$coefficients
-        
-        intercept <- betac1[1]
-        betac <- betac1[-1]
-      } else { # change all as ridge reg to provide final coefficients
-        # betac1 <- solve(t(xc1)%*%xc1+0.001*diag(length(nz)+1))%*%t(xc1)%*%y # Very slow
-        # betac1 <- crossprod(solve(crossprod(xc1)+0.001*diag(length(nz)+1)), crossprod(xc1,y)) # Faster
-        betac1 <- solve((crossprod(xc1) + 0.001*diag(length(nz))), crossprod(xc1, y)) # Fastest
-        intercept <- betac1[1]
-        betac <- betac1[-1]
-      }
-      
-      beta_SPSP[nz] <- betac  
-    } else {
-      # intercept <- .lm.fit(y~1)$coefficients[1]
-      intercept <- glm.fit(y = y, x = rep(1,n), intercept = TRUE, family = family)$coefficients
+    
+    else if (!intercept) {
+      stop("No variable is selected and no intercept.")
     }
-  } else {
-    print("Please specify stardardize == TRUE/FALSE.")
-  }
+  }  
   
   # Change the display and format of some results
   names(beta_SPSP) <- colnames(x)
   nz_name <- colnames(x)[nz]
   z_name <- colnames(x)[z]
-  names(intercept) <- "(Intercept)"
+  names(intercept_est) <- "(Intercept)"
   
   SPSP <- list(beta_SPSP = beta_SPSP, 
                S0 = S0,
                nonzero = nz_name, zero = z_name,
                thres = thres, R = R, 
-               intercept = intercept)
+               intercept = intercept_est)
   
   attr(SPSP, "thres") <- thres ## boundaries for abs(beta)
   attr(SPSP, "R") <- R ## sorted adjacent distances

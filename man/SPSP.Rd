@@ -16,14 +16,15 @@ SPSP(
 )
 }
 \arguments{
-\item{x}{independent variables as a matrix, of dimension n by p; each row is an observation vector with p variables.}
+\item{x}{A matrix with all independent variables, of dimension n by p; each row is an observation vector with p variables.}
 
-\item{y}{response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
+\item{y}{Response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
 For \code{family="binomial"} should be either a factor with two levels.}
 
-\item{family}{either a character string representing one of the built-in families, or else a \code{glm} family object.}
+\item{family}{Response type. Either a character string representing one of the built-in families,
+or else a glm() family object.}
 
-\item{fitfun.SP}{a function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
+\item{fitfun.SP}{A function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
 x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}} 
 or \code{\link[lars]{lars}}. The function fit the model with lasso, adaptive lasso, or ridge regression to 
 return the solution path of the corresponding penalized likelihood approach.
@@ -37,13 +38,13 @@ return the solution path of the corresponding penalized likelihood approach.
   \item{\code{lasso.lars}}{use lasso selection in \code{\link[lars]{lars}} to obtain the solution path.}
 }}
 
-\item{args.fitfun.SP}{a named list containing additional arguments that are passed to the fitting function;
+\item{args.fitfun.SP}{A named list containing additional arguments that are passed to the fitting function;
 see also argument \code{args.fitfun.SP} in do.call.}
 
-\item{standardize}{whether need standardization.}
+\item{standardize}{logical argument. Should conduct standardization before the estimation? Default is TRUE.}
 
 \item{intercept}{logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
-a separate intercept or not.}
+a separate intercept or not. Default is TRUE.}
 
 \item{...}{Additional optional arguments.}
 }
