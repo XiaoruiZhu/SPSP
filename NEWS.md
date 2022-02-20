@@ -1,3 +1,11 @@
+# SPSP 0.1.1
+
+## Major changes
+
+1. Fix the function corresponds to intercept arugument. The intercept argument controls whether to include the intercept, but since SPSP algorithm estimates the intercept separately. It needs to be dealt with separately.
+
+2. The standardize only control the standardization of covariates.
+
 # SPSP 0.1.0
 
 ## Major changes
