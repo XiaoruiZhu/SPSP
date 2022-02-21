@@ -6,6 +6,8 @@
 ## R CMD check results
 There were no ERRORs, Notes, or WARNINGs. 
 
+* [Fixed] Notes of checks results from linux, windows, macos: Namespace in Imports field not imported from: ‘MASS’. All declared Imports should be used.
+
 * [Fixed] The Description field contains <https://doi.org/10.1214/18-EJS1434>). Please rather write <doi:10.1214/18-EJS1434>.
 
 * [Fixed] Please write references in the description of the DESCRIPTION file in the form authors (year) <doi:...> authors (year) <arXiv:...> authors (year, ISBN:...) or if those are not available: authors (year) <https:...> with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for auto-linking. (If you want to add a title as well please put it in quotes: "Title")
