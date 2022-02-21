@@ -11,7 +11,7 @@ Description: An implementation of the feature Selection procedure by Partitionin
             coupled with the solution paths of Lasso, adaptive Lasso, ridge regression, and other penalized 
             estimators.
 Version: 0.1.1
-Date: 2021-07-25
+Date: 2022-02-21
 Authors@R: c(
   person(given = "Xiaorui (Jeremy)", family = "Zhu", email = "zhuxiaorui1989@gmail.com", role = c("aut", "cre")),
   person(given = "Yang", family = "Liu", email = "yliu23@fhcrc.org", role = c("aut")), 
