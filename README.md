@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![](https://cran.r-project.org/package=SPSP)](https://img.shields.io/cran/v/SPSP?logo=R)
+[![](https://img.shields.io/cran/v/SPSP?logo=R)](https://cran.r-project.org/package=SPSP)
 [![CRAN checks](https://cranchecks.info/badges/summary/SPSP)](https://cran.r-project.org/web/checks/check_results_SPSP.html)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/SPSP?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/SPSP)
 [![](https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green)](https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green)
