@@ -1,4 +1,5 @@
 destination: docs
 template:
+  bootstrap: 5
   params:
     ganalytics: G-SLFHGL1KH3
