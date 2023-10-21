@@ -7,6 +7,8 @@
 \alias{adalassoCV.glmnet}
 \alias{ridge.glmnet}
 \alias{lasso.lars}
+\alias{SCAD.ncvreg}
+\alias{MCP.ncvreg}
 \title{Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
 to obtain the solution paths for the SPSP algorithm. The users can also customize a
 function to generate the solution paths. As long as the customized function take 
@@ -22,6 +24,10 @@ adalassoCV.glmnet(x, y, family, standardize, intercept, ...)
 ridge.glmnet(x, y, family, standardize, intercept, ...)
 
 lasso.lars(x, y, family, standardize, intercept, ...)
+
+SCAD.ncvreg(x, y, family, standardize, intercept, ...)
+
+MCP.ncvreg(x, y, family, standardize, intercept, ...)
 }
 \arguments{
 \item{x}{a matrix of the independent variables. The dimensions are (nobs) and (nvars); each row is an observation vector.}
@@ -49,6 +55,10 @@ An object of class \code{"glmnet"} is returned to provide solution paths for the
 An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
 
 An object of class \code{"lars"} is returned to provide solution paths for the SPSP algorithm.
+
+An object of class \code{"ncvreg"} is returned to provide SCAD penalty solution paths for the SPSP algorithm.
+
+An object of class \code{"ncvreg"} is returned to provide solution paths for the SPSP algorithm.
 }
 \description{
 Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
@@ -59,8 +69,8 @@ arguments x, y, family, standardize, and intercept, and return an object of clas
 
 \code{lasso.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}}.
 
-\code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} from cross-validation lasso method
-to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
+\code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} 
+from cross-validation lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
 
 \code{adalassoCV.glmnet} adaptive lasso selection using the \code{lambda.1se} from cross-validation adaptive 
   lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
@@ -68,4 +78,8 @@ to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
 \code{ridge.glmnet} uses ridge regression to obtain the solution path.
 
 \code{lasso.lars} uses lasso selection in \code{\link[lars]{lars}} to obtain the solution path.
+
+\code{SCAD.ncvreg} uses SCAD penalty from \code{\link[ncvreg]{ncvreg}} for fitting regularization paths.
+
+\code{MCP.ncvreg} uses MCP penalty from \code{\link[ncvreg]{ncvreg}} for fitting regularization paths.
 }

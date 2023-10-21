@@ -16,10 +16,10 @@
             estimators.">
 <title>Selection by Partitioning the Solution Paths • SPSP</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Selection by Partitioning the Solution Paths">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Selection by Partitioning the Solution Paths">
 <meta property="og:description" content="An implementation of the feature Selection procedure by Partitioning the entire Solution Paths
             (namely SPSP) to identify the relevant features rather than using a single tuning parameter. 
             By utilizing the entire solution paths, this procedure can obtain better selection accuracy than 
@@ -91,7 +91,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>An implementation of the feature Selection procedure by Partitioning the entire Solution Paths (namely SPSP) to identify the relevant features rather than using a single tuning parameter. By utilizing the entire solution paths, this procedure can obtain better selection accuracy than the commonly used approach of selecting only one tuning parameter based on existing criteria, cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., &amp; Wang, P. (2018) <a href="https://doi.org/10.1214/18-EJS1434" class="external-link uri">https://doi.org/10.1214/18-EJS1434</a>). It is more stable and accurate (low false positive and false negative rates) than other variable selection approaches. In addition, it can be flexibly coupled with the solution paths of Lasso, adaptive Lasso, ridge regression, and other penalized estimators.</p>
+<p>An implementation of the feature Selection procedure by Partitioning the entire Solution Paths (namely SPSP) to identify the relevant features rather than using a single tuning parameter. By utilizing the entire solution paths, this procedure can obtain better selection accuracy than the commonly used approach of selecting only one tuning parameter based on existing criteria, cross-validation (CV), generalized CV, AIC, BIC, and EBIC (Liu, Y., &amp; Wang, P. (2018) <a href="https://doi.org/10.1214/18-EJS1434" class="external-link uri">https://doi.org/10.1214/18-EJS1434</a>). It is more stable and accurate (low false positive and false negative rates) than other variable selection approaches. In addition, it can be flexibly coupled with the solution paths of Lasso, adaptive Lasso, SCAD, MCP, ridge regression, and other penalized estimators.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -101,59 +101,51 @@
 <h3 id="install-spsp-development-version-from-github-recommended">Install <code>SPSP</code> development version from GitHub (recommended)<a class="anchor" aria-label="anchor" href="#install-spsp-development-version-from-github-recommended"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Install the development version from GitHub</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"XiaoruiZhu/SPSP"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Install the development version from GitHub</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"XiaoruiZhu/SPSP"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="install-spsp-from-the-cran">Install <code>SPSP</code> from the CRAN<a class="anchor" aria-label="anchor" href="#install-spsp-from-the-cran"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Install from CRAN</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"SPSP"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Install from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"SPSP"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>The following example shows the R code for</p>
+<p>The user-friendly function SPSP() conducts the selection by Partitioning the Solution Paths (the SPSP procedure) to selects the relevant predictors. The user only needs to specify the independent variables matrix, response, family, and a penalized method that can generate the solution paths, for example, Lasso, adaptive Lasso, SCAD, MCP, ridge regression. The embedded selection methods in this package can be called using <code>fitfun.SP = lasso.glmnet</code>. Currently, six methods are included: <code>lasso.glmnet</code>, <code>adalasso.glmnet</code>, <code>adalassoCV.glmnet</code>, <code>SCAD.ncvreg</code>, <code>MCP.ncvreg</code>, and <code>ridge.glmnet</code>.</p>
+<p>The following example shows the R codes:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xiaoruizhu.github.io/SPSP/" class="external-link">SPSP</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">HihgDim</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glmnet.stanford.edu" class="external-link">glmnet</a></span><span class="op">)</span>
-
-<span class="co"># Use the user-friendly function SPSP() to conduct the selection by Partitioning the </span>
-<span class="co"># Solution Paths (the SPSP algorithm). The user only needs to specify the independent </span>
-<span class="co"># variables matrix, response, family, and \code{fitfun.SP = lasso.glmnet}. </span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">HighDim</span><span class="op">[</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="va">HighDim</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>
-
-<span class="va">spsp_lasso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SPSP.html">SPSP</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, fitfun.SP <span class="op">=</span> <span class="va">lasso.glmnet</span>,
-                     init <span class="op">=</span> <span class="fl">1</span>, standardize <span class="op">=</span> <span class="cn">FALSE</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_lasso_1</span><span class="op">$</span><span class="va">nonzero</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_lasso_1</span><span class="op">$</span><span class="va">beta_SPSP</span><span class="op">)</span>
-
-<span class="va">spsp_adalasso_5</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SPSP.html">SPSP</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, fitfun.SP <span class="op">=</span> <span class="va">adalasso.glmnet</span>,
-                        init <span class="op">=</span> <span class="fl">5</span>, standardize <span class="op">=</span> <span class="cn">T</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-                              
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_adalasso_5</span><span class="op">$</span><span class="va">nonzero</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_adalasso_5</span><span class="op">$</span><span class="va">beta_SPSP</span><span class="op">)</span>
-
-<span class="co"># Use the function SPSP_step() to select the relevant predictors by partitioning the </span>
-<span class="co"># solution paths based on the user provided solution paths \code{BETA}. </span>
-
-<span class="va">lasso_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, alpha <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># SPSP+Lasso method</span>
-<span class="va">K</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">lasso_fit</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
-<span class="va">LBETA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">lasso_fit</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span>
-<span class="va">spsp_lasso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SPSP_step.html">SPSP_step</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, BETA <span class="op">=</span> <span class="va">LBETA</span>, 
-                          init <span class="op">=</span> <span class="fl">1</span>, standardize <span class="op">=</span> <span class="cn">FALSE</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_lasso_1</span><span class="op">$</span><span class="va">nonzero</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_lasso_1</span><span class="op">$</span><span class="va">beta_SPSP</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xiaoruizhu.github.io/SPSP/" class="external-link">SPSP</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">HihgDim</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glmnet.stanford.edu" class="external-link">glmnet</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">HighDim</span><span class="op">[</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">HighDim</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># SPSP + lasso</span></span>
+<span><span class="va">spsp_lasso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SPSP.html">SPSP</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, fitfun.SP <span class="op">=</span> <span class="va">lasso.glmnet</span>,</span>
+<span>                     init <span class="op">=</span> <span class="fl">1</span>, standardize <span class="op">=</span> <span class="cn">FALSE</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_lasso_1</span><span class="op">$</span><span class="va">nonzero</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_lasso_1</span><span class="op">$</span><span class="va">beta_SPSP</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># SPSP + adalasso</span></span>
+<span><span class="va">spsp_adalasso_5</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SPSP.html">SPSP</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, fitfun.SP <span class="op">=</span> <span class="va">adalasso.glmnet</span>,</span>
+<span>                        init <span class="op">=</span> <span class="fl">5</span>, standardize <span class="op">=</span> <span class="cn">T</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                              </span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_adalasso_5</span><span class="op">$</span><span class="va">nonzero</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_adalasso_5</span><span class="op">$</span><span class="va">beta_SPSP</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># SPSP + SCAD</span></span>
+<span><span class="va">spsp_scad_5</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SPSP.html">SPSP</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, fitfun.SP <span class="op">=</span> <span class="va">SCAD.ncvreg</span>,</span>
+<span>                    init <span class="op">=</span> <span class="fl">5</span>, standardize <span class="op">=</span> <span class="cn">T</span>, intercept <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                              </span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_scad_5</span><span class="op">$</span><span class="va">nonzero</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spsp_scad_5</span><span class="op">$</span><span class="va">beta_SPSP</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -198,7 +190,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=SPSP" class="external-link"><img src="https://img.shields.io/cran/v/SPSP?logo=R"></a></li>
-<li><a href="https://cran.r-project.org/web/checks/check_results_SPSP.html" class="external-link"><img src="https://cranchecks.info/badges/summary/SPSP" alt="CRAN checks"></a></li>
+<li><a href="https://cran.r-project.org/web/checks/check_results_SPSP.html" class="external-link"><img src="https://badges.cranchecks.info/summary/SPSP.svg" alt="CRAN checks"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/grand-total/SPSP" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/SPSP?color=blue"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/last-month/SPSP?color=green"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/last-week/SPSP?color=yellow" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/last-week/SPSP?color=yellow"></a></li>
@@ -216,7 +208,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

@@ -119,6 +119,267 @@ test_that("Check SPSP() with lasso.glmnet() use data(HighDim)", {
   expect_true(!is.na(r_spsp5_std_int$intercept))
 })
 
+test_that("Check SPSP() with adalasso.glmnet() use data(HighDim)", {
+  skip_if_not_installed("glmnet")
+  library(glmnet)
+  
+  # Use the high dimensional dataset (data(HighDim)) to test SPSP+Lasso:
+  data(HighDim)  
+  
+  x <- as.matrix(HighDim[,-1])
+  y <- HighDim[,1]
+  
+  xstd <- scale(HighDim[,-1], center = TRUE, scale = TRUE)
+  
+  HighDim2 <- data.frame(Y = y, xstd)
+  
+  test_lm_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim)
+  
+  test_lm_std_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim2)
+  
+  # When nonzero == 0, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = rep(1, length(y)), intercept = TRUE, family = gaussian())$coefficients
+  
+  # When nonzero >= 1, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = cbind(1, x[,1:3]), intercept = FALSE, family = gaussian())$coefficients
+  test_lm_int <- glm(y ~ X1 + X2 + X3 + 1, data = HighDim, family = gaussian())$coefficients
+  
+  r_spsp1 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalasso.glmnet,
+                        init = 1, standardize = FALSE, intercept = FALSE)
+  
+  est_beta_1 <- r_spsp1$beta_SPSP
+  # colnames(X)[which(est_beta_1 != 0)]
+  # head(est_beta_1)
+  
+  r_spsp5 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalasso.glmnet,
+                        init = 5, standardize = FALSE, intercept = FALSE)
+  est_beta_5 <- r_spsp5$beta_SPSP
+  # head(est_beta_5)
+  
+  r_spsp5_std <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalasso.glmnet,
+                            init = 5, standardize = TRUE, intercept = FALSE)
+  est_beta_5_std <- r_spsp5_std$beta_SPSP
+  # head(est_beta_5_std)
+  
+  r_spsp5_std_int <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalasso.glmnet,
+                                init = 5, standardize = TRUE, intercept = TRUE)
+  est_beta_5_std_int <- r_spsp5_std_int$beta_SPSP
+  # head(est_beta_5_std_int)
+  # r_spsp5_std_int$intercept
+  
+  # Check if coefficients are same as ols
+  expect_equal(coef(test_lm_3), est_beta_1[1:3])
+  expect_equal(coef(test_lm_3), est_beta_5[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std_int[1:3])
+  
+  # Check if intercept is correct
+  expect_true(is.na(r_spsp1$intercept))
+  expect_true(is.na(r_spsp5$intercept))
+  expect_true(is.na(r_spsp5_std$intercept))
+  expect_true(!is.na(r_spsp5_std_int$intercept))
+})
+
+test_that("Check SPSP() with adalassoCV.glmnet() use data(HighDim)", {
+  skip_if_not_installed("glmnet")
+  
+  library(glmnet)
+  
+  # Use the high dimensional dataset (data(HighDim)) to test SPSP+Lasso:
+  data(HighDim)  
+  
+  x <- as.matrix(HighDim[,-1])
+  y <- HighDim[,1]
+  
+  xstd <- scale(HighDim[,-1], center = TRUE, scale = TRUE)
+  
+  HighDim2 <- data.frame(Y = y, xstd)
+  
+  test_lm_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim)
+  
+  test_lm_std_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim2)
+  
+  # When nonzero == 0, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = rep(1, length(y)), intercept = TRUE, family = gaussian())$coefficients
+  
+  # When nonzero >= 1, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = cbind(1, x[,1:3]), intercept = FALSE, family = gaussian())$coefficients
+  test_lm_int <- glm(y ~ X1 + X2 + X3 + 1, data = HighDim, family = gaussian())$coefficients
+  
+  r_spsp1 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalassoCV.glmnet,
+                        init = 1, standardize = FALSE, intercept = FALSE)
+  
+  est_beta_1 <- r_spsp1$beta_SPSP
+  # colnames(X)[which(est_beta_1 != 0)]
+  # head(est_beta_1)
+  
+  r_spsp5 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalassoCV.glmnet,
+                        init = 5, standardize = FALSE, intercept = FALSE)
+  est_beta_5 <- r_spsp5$beta_SPSP
+  # head(est_beta_5)
+  
+  r_spsp5_std <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalassoCV.glmnet,
+                            init = 5, standardize = TRUE, intercept = FALSE)
+  est_beta_5_std <- r_spsp5_std$beta_SPSP
+  # head(est_beta_5_std)
+  
+  r_spsp5_std_int <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = adalassoCV.glmnet,
+                                init = 5, standardize = TRUE, intercept = TRUE)
+  est_beta_5_std_int <- r_spsp5_std_int$beta_SPSP
+  # head(est_beta_5_std_int)
+  # r_spsp5_std_int$intercept
+  
+  # Check if coefficients are same as ols
+  expect_equal(coef(test_lm_3), est_beta_1[1:3])
+  expect_equal(coef(test_lm_3), est_beta_5[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std_int[1:3])
+  
+  # Check if intercept is correct
+  expect_true(is.na(r_spsp1$intercept))
+  expect_true(is.na(r_spsp5$intercept))
+  expect_true(is.na(r_spsp5_std$intercept))
+  expect_true(!is.na(r_spsp5_std_int$intercept))
+})
+
+test_that("Check SPSP() with SCAD.ncvreg() use data(HighDim)", {
+  skip_if_not_installed("glmnet")
+  
+  library(ncvreg)
+  
+  # Use the high dimensional dataset (data(HighDim)) to test SPSP+Lasso:
+  data(HighDim)  
+  
+  x <- as.matrix(HighDim[,-1])
+  y <- HighDim[,1]
+  
+  xstd <- scale(HighDim[,-1], center = TRUE, scale = TRUE)
+  
+  HighDim2 <- data.frame(Y = y, xstd)
+  
+  test_lm_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim)
+  
+  test_lm_std_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim2)
+  
+  # When nonzero == 0, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = rep(1, length(y)), intercept = TRUE, family = gaussian())$coefficients
+  
+  # When nonzero >= 1, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = cbind(1, x[,1:3]), intercept = FALSE, family = gaussian())$coefficients
+  test_lm_int <- glm(y ~ X1 + X2 + X3 + 1, data = HighDim, family = gaussian())$coefficients
+
+  test <- SCAD.ncvreg(x = x, 
+                          y = y, 
+                          family = "gaussian",
+                          standardize = FALSE, 
+                          intercept = FALSE)
+  # test$beta
+  
+  r_spsp1 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = SCAD.ncvreg,
+                        init = 1, standardize = FALSE, intercept = FALSE)
+  
+  est_beta_1 <- r_spsp1$beta_SPSP
+  # colnames(X)[which(est_beta_1 != 0)]
+  # head(est_beta_1)
+  
+  r_spsp5 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = SCAD.ncvreg,
+                        init = 5, standardize = FALSE, intercept = FALSE)
+  est_beta_5 <- r_spsp5$beta_SPSP
+  # head(est_beta_5)
+  
+  r_spsp5_std <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = SCAD.ncvreg,
+                            init = 5, standardize = TRUE, intercept = FALSE)
+  est_beta_5_std <- r_spsp5_std$beta_SPSP
+  # head(est_beta_5_std)
+  
+  r_spsp5_std_int <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = SCAD.ncvreg,
+                                init = 5, standardize = TRUE, intercept = TRUE)
+  est_beta_5_std_int <- r_spsp5_std_int$beta_SPSP
+  # head(est_beta_5_std_int)
+  # r_spsp5_std_int$intercept
+  
+  # Check if coefficients are same as ols
+  expect_equal(coef(test_lm_3), est_beta_1[1:3])
+  expect_equal(coef(test_lm_3), est_beta_5[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std_int[1:3])
+  
+  # Check if intercept is correct
+  expect_true(is.na(r_spsp1$intercept))
+  expect_true(is.na(r_spsp5$intercept))
+  expect_true(is.na(r_spsp5_std$intercept))
+  expect_true(!is.na(r_spsp5_std_int$intercept))
+})
+
+test_that("Check SPSP() with MCP.ncvreg() use data(HighDim)", {
+  skip_if_not_installed("glmnet")
+  
+  library(ncvreg)
+  
+  # Use the high dimensional dataset (data(HighDim)) to test SPSP+Lasso:
+  data(HighDim)  
+  
+  x <- as.matrix(HighDim[,-1])
+  y <- HighDim[,1]
+  
+  xstd <- scale(HighDim[,-1], center = TRUE, scale = TRUE)
+  
+  HighDim2 <- data.frame(Y = y, xstd)
+  
+  test_lm_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim)
+  
+  test_lm_std_3 <- lm(Y ~ X1 + X2 + X3 + 0, data = HighDim2)
+  
+  # When nonzero == 0, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = rep(1, length(y)), intercept = TRUE, family = gaussian())$coefficients
+  
+  # When nonzero >= 1, run the following to obtain intercept
+  # test_lm_int <- glm.fit(y = y, x = cbind(1, x[,1:3]), intercept = FALSE, family = gaussian())$coefficients
+  test_lm_int <- glm(y ~ X1 + X2 + X3 + 1, data = HighDim, family = gaussian())$coefficients
+  
+  test <- MCP.ncvreg(x = x, 
+                      y = y, 
+                      family = "gaussian",
+                      standardize = FALSE, 
+                      intercept = FALSE)
+  # test$beta
+  
+  r_spsp1 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = MCP.ncvreg,
+                        init = 1, standardize = FALSE, intercept = FALSE)
+  
+  est_beta_1 <- r_spsp1$beta_SPSP
+  # colnames(X)[which(est_beta_1 != 0)]
+  # head(est_beta_1)
+  
+  r_spsp5 <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = MCP.ncvreg,
+                        init = 5, standardize = FALSE, intercept = FALSE)
+  est_beta_5 <- r_spsp5$beta_SPSP
+  # head(est_beta_5)
+  
+  r_spsp5_std <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = MCP.ncvreg,
+                            init = 5, standardize = TRUE, intercept = FALSE)
+  est_beta_5_std <- r_spsp5_std$beta_SPSP
+  # head(est_beta_5_std)
+  
+  r_spsp5_std_int <- SPSP::SPSP(x = x, y = y, family = "gaussian", fitfun.SP = MCP.ncvreg,
+                                init = 5, standardize = TRUE, intercept = TRUE)
+  est_beta_5_std_int <- r_spsp5_std_int$beta_SPSP
+  # head(est_beta_5_std_int)
+  # r_spsp5_std_int$intercept
+  
+  # Check if coefficients are same as ols
+  expect_equal(coef(test_lm_3), est_beta_1[1:3])
+  expect_equal(coef(test_lm_3), est_beta_5[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std[1:3])
+  expect_equal(coef(test_lm_std_3), est_beta_5_std_int[1:3])
+  
+  # Check if intercept is correct
+  expect_true(is.na(r_spsp1$intercept))
+  expect_true(is.na(r_spsp5$intercept))
+  expect_true(is.na(r_spsp5_std$intercept))
+  expect_true(!is.na(r_spsp5_std_int$intercept))
+})
+
 test_that("Check SPSP() with use data(Boston)", {
   skip_if_not_installed("MASS")
   skip_if_not_installed("glmnet")

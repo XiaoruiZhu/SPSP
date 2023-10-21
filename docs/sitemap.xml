@@ -19,9 +19,6 @@
     <loc>/reference/HighDim.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
     <loc>/reference/SPSP-package.html</loc>
   </url>
   <url>
@@ -29,5 +26,8 @@
   </url>
   <url>
     <loc>/reference/SPSP_step.html</loc>
+  </url>
+  <url>
+    <loc>/reference/index.html</loc>
   </url>
 </urlset>

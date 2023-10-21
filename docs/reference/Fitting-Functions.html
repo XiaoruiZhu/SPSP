@@ -5,16 +5,18 @@ function to generate the solution paths. As long as the customized function take
 arguments x, y, family, standardize, and intercept, and return an object of class 
 glmnet, lars (or SCAD, MCP in the future).
 lasso.glmnet uses lasso selection from glmnet.
-adalasso.glmnet the function to conduct the adaptive lasso selection using the lambda.1se from cross-validation lasso method
-to obtain initial coefficients. It uses package glmnet.
+adalasso.glmnet the function to conduct the adaptive lasso selection using the lambda.1se 
+from cross-validation lasso method to obtain initial coefficients. It uses package glmnet.
 adalassoCV.glmnet adaptive lasso selection using the lambda.1se from cross-validation adaptive 
   lasso method to obtain initial coefficients. It uses package glmnet.
 ridge.glmnet uses ridge regression to obtain the solution path.
-lasso.lars uses lasso selection in lars to obtain the solution path."><title>Four Fitting-Functions that can be used as an input of fitfun.SP argument 
+lasso.lars uses lasso selection in lars to obtain the solution path.
+SCAD.ncvreg uses SCAD penalty from ncvreg for fitting regularization paths.
+MCP.ncvreg uses MCP penalty from ncvreg for fitting regularization paths."><title>Four Fitting-Functions that can be used as an input of fitfun.SP argument 
 to obtain the solution paths for the SPSP algorithm. The users can also customize a
 function to generate the solution paths. As long as the customized function take 
 arguments x, y, family, standardize, and intercept, and return an object of class 
-glmnet, lars (or SCAD, MCP in the future). — Fitting-Functions • SPSP</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Four Fitting-Functions that can be used as an input of fitfun.SP argument 
+glmnet, lars (or SCAD, MCP in the future). — Fitting-Functions • SPSP</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Four Fitting-Functions that can be used as an input of fitfun.SP argument 
 to obtain the solution paths for the SPSP algorithm. The users can also customize a
 function to generate the solution paths. As long as the customized function take 
 arguments x, y, family, standardize, and intercept, and return an object of class 
@@ -24,12 +26,14 @@ function to generate the solution paths. As long as the customized function take
 arguments x, y, family, standardize, and intercept, and return an object of class 
 glmnet, lars (or SCAD, MCP in the future).
 lasso.glmnet uses lasso selection from glmnet.
-adalasso.glmnet the function to conduct the adaptive lasso selection using the lambda.1se from cross-validation lasso method
-to obtain initial coefficients. It uses package glmnet.
+adalasso.glmnet the function to conduct the adaptive lasso selection using the lambda.1se 
+from cross-validation lasso method to obtain initial coefficients. It uses package glmnet.
 adalassoCV.glmnet adaptive lasso selection using the lambda.1se from cross-validation adaptive 
   lasso method to obtain initial coefficients. It uses package glmnet.
 ridge.glmnet uses ridge regression to obtain the solution path.
-lasso.lars uses lasso selection in lars to obtain the solution path."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+lasso.lars uses lasso selection in lars to obtain the solution path.
+SCAD.ncvreg uses SCAD penalty from ncvreg for fitting regularization paths.
+MCP.ncvreg uses MCP penalty from ncvreg for fitting regularization paths."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-SLFHGL1KH3"></script><script>
@@ -92,52 +96,85 @@ function to generate the solution paths. As long as the customized function take
 arguments x, y, family, standardize, and intercept, and return an object of class 
 <code>glmnet</code>, <code>lars</code> (or <code>SCAD</code>, <code>MCP</code> in the future).</p>
 <p><code>lasso.glmnet</code> uses lasso selection from <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>.</p>
-<p><code>adalasso.glmnet</code> the function to conduct the adaptive lasso selection using the <code>lambda.1se</code> from cross-validation lasso method
-to obtain initial coefficients. It uses package <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>.</p>
+<p><code>adalasso.glmnet</code> the function to conduct the adaptive lasso selection using the <code>lambda.1se</code> 
+from cross-validation lasso method to obtain initial coefficients. It uses package <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>.</p>
 <p><code>adalassoCV.glmnet</code> adaptive lasso selection using the <code>lambda.1se</code> from cross-validation adaptive 
   lasso method to obtain initial coefficients. It uses package <code><a href="https://glmnet.stanford.edu/reference/glmnet.html" class="external-link">glmnet</a></code>.</p>
 <p><code>ridge.glmnet</code> uses ridge regression to obtain the solution path.</p>
 <p><code>lasso.lars</code> uses lasso selection in <code><a href="https://rdrr.io/pkg/lars/man/lars.html" class="external-link">lars</a></code> to obtain the solution path.</p>
+<p><code>SCAD.ncvreg</code> uses SCAD penalty from <code><a href="https://rdrr.io/pkg/ncvreg/man/ncvreg.html" class="external-link">ncvreg</a></code> for fitting regularization paths.</p>
+<p><code>MCP.ncvreg</code> uses MCP penalty from <code><a href="https://rdrr.io/pkg/ncvreg/man/ncvreg.html" class="external-link">ncvreg</a></code> for fitting regularization paths.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lasso.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">adalasso.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">adalassoCV.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">ridge.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">lasso.lars</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lasso.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">adalasso.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">adalassoCV.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ridge.glmnet</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">lasso.lars</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">SCAD.ncvreg</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">MCP.ncvreg</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">family</span>, <span class="va">standardize</span>, <span class="va">intercept</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>a matrix of the independent variables. The dimensions are (nobs) and (nvars); each row is an observation vector.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>Response variable. Quantitative for <code>family="gaussian"</code> or <code>family="poisson"</code> (non-negative counts). 
 For <code>family="binomial"</code> should be either a factor with two levels.</p></dd>
+
+
 <dt>family</dt>
 <dd><p>Response type. Either a character string representing one of the built-in families,
 or else a glm() family object.</p></dd>
+
+
 <dt>standardize</dt>
 <dd><p>logical argument. Should conduct standardization before the estimation? Default is TRUE.</p></dd>
+
+
 <dt>intercept</dt>
 <dd><p>logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
 a separate intercept or not. Default is TRUE.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional optional arguments.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.
-An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.
-An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.
-An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.
-An object of class <code>"lars"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+    
+
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+
+
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+
+
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+
+
+<p>An object of class <code>"glmnet"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+
+
+<p>An object of class <code>"lars"</code> is returned to provide solution paths for the SPSP algorithm.</p>
+
+
+<p>An object of class <code>"ncvreg"</code> is returned to provide SCAD penalty solution paths for the SPSP algorithm.</p>
+
+
+<p>An object of class <code>"ncvreg"</code> is returned to provide solution paths for the SPSP algorithm.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -149,7 +186,7 @@ An object of class <code>"lars"</code> is returned to provide solution paths for
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>

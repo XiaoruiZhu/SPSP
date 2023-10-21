@@ -10,27 +10,29 @@ Description: An implementation of the feature Selection procedure by Partitionin
             false negative rates) than other variable selection approaches. In addition, it can be flexibly 
             coupled with the solution paths of Lasso, adaptive Lasso, ridge regression, and other penalized 
             estimators.
-Version: 0.1.1
-Date: 2022-02-21
+Version: 0.2.0
+Date: 2023-10-21
 Authors@R: c(
   person(given = "Xiaorui (Jeremy)", family = "Zhu", email = "zhuxiaorui1989@gmail.com", role = c("aut", "cre")),
   person(given = "Yang", family = "Liu", email = "yliu23@fhcrc.org", role = c("aut")), 
   person(given = "Peng", family = "Wang", email = "wangp9@ucmail.uc.edu", role = c("aut"))
   )
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
-URL: https://xiaoruizhu.github.io/SPSP/
+URL: https://xiaoruizhu.github.io/SPSP/, https://github.com/XiaoruiZhu/SPSP
 BugReports: https://github.com/XiaoruiZhu/SPSP/issues
 License: GPL (>= 2)
 Encoding: UTF-8
 Depends:
-  R (>= 3.5.0),
-  glmnet, 
-  lars
+  R (>= 3.5.0)
 Imports: 
   Rcpp (>= 1.0.7)
 LinkingTo: Rcpp
 Suggests: 
+  glmnet, 
+  lars,
+  ncvreg,
   testthat (>= 3.0.0), 
-  MASS
+  MASS, 
+  Matrix
 Config/testthat/edition: 3
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3

@@ -8,7 +8,7 @@ SPSP(
   x,
   y,
   family = c("gaussian", "binomial"),
-  fitfun.SP = lasso.glmnet,
+  fitfun.SP = adalasso.glmnet,
   args.fitfun.SP = list(),
   standardize = TRUE,
   intercept = TRUE,
@@ -25,9 +25,9 @@ For \code{family="binomial"} should be either a factor with two levels.}
 or else a glm() family object.}
 
 \item{fitfun.SP}{A function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
-x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}} 
-or \code{\link[lars]{lars}}. The function fit the model with lasso, adaptive lasso, or ridge regression to 
-return the solution path of the corresponding penalized likelihood approach.
+x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}}, 
+\code{\link[ncvreg]{ncvreg}}, or \code{\link[lars]{lars}}. The function fit the penalized models with lasso, adaptive lasso,
+SCAD, or MCP penalty, or ridge regression to return the solution path of the corresponding penalized likelihood approach.
 \describe{
   \item{\code{lasso.glmnet}}{lasso selection from \code{\link[glmnet]{glmnet}}.}
   \item{\code{adalasso.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation lasso method
@@ -35,6 +35,8 @@ return the solution path of the corresponding penalized likelihood approach.
   \item{\code{adalassoCV.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation adaptive 
   lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.}
   \item{\code{ridge.glmnet}}{use ridge regression to obtain the solution path.}
+  \item{\code{SCAD.ncvreg}}{use SCAD-penalized regression model in \code{\link[ncvreg]{ncvreg}} to obtain the solution path.}
+  \item{\code{MCP.ncvreg}}{use MCP-penalized regression model in \code{\link[ncvreg]{ncvreg}} to obtain the solution path.}
   \item{\code{lasso.lars}}{use lasso selection in \code{\link[lars]{lars}} to obtain the solution path.}
 }}
 
@@ -60,7 +62,7 @@ An object of class \code{"SPSP"} is a list containing at least the following com
 
 This object has attribute contains: 
 
-\item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+\item{\code{mod.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
 \item{\code{family}}{the family of fitted object;}
 \item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
 \item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}

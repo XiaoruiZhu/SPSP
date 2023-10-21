@@ -26,7 +26,7 @@ For \code{family="binomial"} should be either a factor with two levels.}
 
 \item{BETA}{the solution paths obtained from a prespecified fitting step \code{fitfun.SP = lasso.glmnet} etc. It must be 
 a p by k matrix, should be thicker and thicker, each column corresponds to a lambda, and lambda gets smaller and smaller.
-It is just the returned value \code{beta} from a \code{glmnet} object.}
+It is the returned coefficient matrix \code{beta} from a \code{glmnet} object, or a \code{ncvreg} object.}
 
 \item{standardize}{whether need standardization.}
 
@@ -51,7 +51,7 @@ A list containing at least the following components:
 
 This object has attribute contains: 
 
-\item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+\item{\code{mod.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
 \item{\code{family}}{the family of fitted object;}
 \item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
 \item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}

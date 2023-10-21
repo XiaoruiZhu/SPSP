@@ -50,9 +50,9 @@ SPSP <- function(x, ...) {
 #' @param family Response type. Either a character string representing one of the built-in families,
 #' or else a glm() family object.
 #' @param fitfun.SP A function to obtain the solution paths for the SPSP algorithm. This function takes the arguments 
-#' x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}} 
-#' or \code{\link[lars]{lars}}. The function fit the model with lasso, adaptive lasso, or ridge regression to 
-#' return the solution path of the corresponding penalized likelihood approach.
+#' x, y, family as above, and additionally the standardize and intercept and others in \code{\link[glmnet]{glmnet}}, 
+#' \code{\link[ncvreg]{ncvreg}}, or \code{\link[lars]{lars}}. The function fit the penalized models with lasso, adaptive lasso,
+#' SCAD, or MCP penalty, or ridge regression to return the solution path of the corresponding penalized likelihood approach.
 #' \describe{
 #'   \item{\code{lasso.glmnet}}{lasso selection from \code{\link[glmnet]{glmnet}}.}
 #'   \item{\code{adalasso.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation lasso method
@@ -60,6 +60,8 @@ SPSP <- function(x, ...) {
 #'   \item{\code{adalassoCV.glmnet}}{adaptive lasso selection using the \code{lambda.1se} from cross-validation adaptive 
 #'   lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.}
 #'   \item{\code{ridge.glmnet}}{use ridge regression to obtain the solution path.}
+#'   \item{\code{SCAD.ncvreg}}{use SCAD-penalized regression model in \code{\link[ncvreg]{ncvreg}} to obtain the solution path.}
+#'   \item{\code{MCP.ncvreg}}{use MCP-penalized regression model in \code{\link[ncvreg]{ncvreg}} to obtain the solution path.}
 #'   \item{\code{lasso.lars}}{use lasso selection in \code{\link[lars]{lars}} to obtain the solution path.}
 #' } 
 #' @param standardize logical argument. Should conduct standardization before the estimation? Default is TRUE.
@@ -72,6 +74,7 @@ SPSP <- function(x, ...) {
 #' @importFrom Rcpp evalCpp
 #' @importFrom stats glm.fit coef 
 #' @importFrom glmnet glmnet cv.glmnet
+#' @importFrom ncvreg ncvreg
 #' 
 #' @return An object of class \code{"SPSP"} is a list containing at least the following components:
 #' \item{\code{beta_SPSP}}{the estimated coefficients of SPSP selected model;}
@@ -84,7 +87,7 @@ SPSP <- function(x, ...) {
 #' 
 #' This object has attribute contains: 
 #' 
-#' \item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+#' \item{\code{mod.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
 #' \item{\code{family}}{the family of fitted object;}
 #' \item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
 #' \item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}
@@ -119,7 +122,7 @@ SPSP <-
   function(x, 
            y, 
            family = c("gaussian", "binomial"),
-           fitfun.SP = lasso.glmnet, 
+           fitfun.SP = adalasso.glmnet, 
            args.fitfun.SP = list(), 
            standardize = TRUE, 
            intercept = TRUE, 
@@ -134,11 +137,14 @@ SPSP <-
                                           standardize = standardize, intercept = intercept),
                                      args.fitfun.SP))
   
+  # Handle BETAs from different class of fitted models, beta may have different structure from different package.
+  BETAs_tem <- getBETAs(fit_mod_SP)
+  
   # Conduct the SPSP step that use the above solution path to obtain relevant predictors.
-  SPSP_temp <- SPSP_step(x = x, y = y, BETA = fit_mod_SP$beta, standardize = standardize, intercept = intercept, ...)
+  SPSP_temp <- SPSP_step(x = x, y = y, BETA = BETAs_tem, standardize = standardize, intercept = intercept, ...)
 
   # Assign attributes and class
-  attr(SPSP_temp, "glmnet.fit") <- fit_mod_SP
+  attr(SPSP_temp, "mod.fit") <- fit_mod_SP
   attr(SPSP_temp, "family") <- family
   attr(SPSP_temp, "fitfun.SP") <- fitfun.SP
   attr(SPSP_temp, "args.fitfun.SP") <- args.fitfun.SP
@@ -161,7 +167,7 @@ SPSP <-
 #' @param family either a character string representing one of the built-in families, or else a glm() family object. 
 #' @param BETA the solution paths obtained from a prespecified fitting step \code{fitfun.SP = lasso.glmnet} etc. It must be 
 #' a p by k matrix, should be thicker and thicker, each column corresponds to a lambda, and lambda gets smaller and smaller.
-#' It is just the returned value \code{beta} from a \code{glmnet} object. 
+#' It is the returned coefficient matrix \code{beta} from a \code{glmnet} object, or a \code{ncvreg} object.
 #' @param standardize whether need standardization.
 #' @param intercept logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
 #' a separate intercept or not.
@@ -199,7 +205,7 @@ SPSP <-
 #' 
 #' This object has attribute contains: 
 #' 
-#' \item{\code{glmnet.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
+#' \item{\code{mod.fit}}{the fitted penalized regression within the input function \code{fitfun.SP};}
 #' \item{\code{family}}{the family of fitted object;}
 #' \item{\code{fitfun.SP}}{the function to obtain the solution paths for the SPSP algorithm;}
 #' \item{\code{args.fitfun.SP}}{a named list containing additional arguments for the function \code{fitfun.SP}.}

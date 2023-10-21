@@ -56,8 +56,8 @@ lasso.glmnet <- function(x,
 }
 
 
-#' \code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} from cross-validation lasso method
-#' to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
+#' \code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} 
+#' from cross-validation lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
 #' @rdname Fitting-Functions
 #' 
 #' @return An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm. 
@@ -78,7 +78,7 @@ adalasso.glmnet <- function(x,
   }
   
   if (!requireNamespace("glmnet", quietly = TRUE)) 
-    stop("Package ", sQuote("glmnet"), " needed but not available")
+    stop("Package ", sQuote("glmnet"), " is needed but not available")
   
   n <- dim(x)[1]; p <- dim(x)[2]
   
@@ -207,7 +207,7 @@ ridge.glmnet <- function(x,
                          standardize, 
                          intercept, ...) {
   if (!requireNamespace("glmnet", quietly = TRUE)) 
-    stop("Package ", sQuote("glmnet"), " needed but not available")
+    stop("Package ", sQuote("glmnet"), " is needed but not available")
   
   fit_sp <- glmnet(x = x, y = y, family = family, 
                    alpha = 0, standardize = standardize, intercept=intercept, ...) 
@@ -237,3 +237,62 @@ lasso.lars <- function(x,
   # return(fit_sp)
 }
 
+#' \code{SCAD.ncvreg} uses SCAD penalty from \code{\link[ncvreg]{ncvreg}} for fitting regularization paths.
+#' 
+#' @rdname Fitting-Functions
+#' 
+#' @return An object of class \code{"ncvreg"} is returned to provide SCAD penalty solution paths for the SPSP algorithm. 
+#' 
+#' @importFrom ncvreg ncvreg
+#' 
+#' @export
+#'
+SCAD.ncvreg <- function(x, 
+                       y, 
+                       family,
+                       standardize, 
+                       intercept, ...) {
+  if (!requireNamespace("ncvreg", quietly = TRUE)) 
+    stop("Package ", sQuote("ncvreg"), " is needed but not available")
+  
+  # If the penalty.factor are given, use the penalties.
+  
+  fit_sp <- ncvreg(X = x,
+                   y = y,
+                   family = family,
+                   alpha = 1,
+                   penalty = "SCAD",
+                   ...)
+  
+  return(fit_sp)
+}
+
+#' \code{MCP.ncvreg} uses MCP penalty from \code{\link[ncvreg]{ncvreg}} for fitting regularization paths.
+#' 
+#' @rdname Fitting-Functions
+#' 
+#' @return An object of class \code{"ncvreg"} is returned to provide solution paths for the SPSP algorithm. 
+#' 
+#' @importFrom ncvreg ncvreg
+#' 
+#' @export
+#'
+MCP.ncvreg <- function(x, 
+                        y, 
+                        family,
+                        standardize, 
+                        intercept, ...) {
+  if (!requireNamespace("ncvreg", quietly = TRUE)) 
+    stop("Package ", sQuote("ncvreg"), " is needed but not available")
+  
+  # If the penalty.factor are given, use the penalties.
+  
+  fit_sp <- ncvreg(X = x,
+                   y = y,
+                   family = family,
+                   alpha = 1,
+                   penalty = "MCP",
+                   ...)
+  
+  return(fit_sp)
+}
