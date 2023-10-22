@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 4.1.0
+* local OS X install aarch64-apple-darwin20, R 4.3.1 (2023-06-16)
 * ubuntu 16.04.6 LTS (on travis-ci), R 4.1.0
 * win-builder (devel and release)
 

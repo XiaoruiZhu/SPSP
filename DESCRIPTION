@@ -18,21 +18,21 @@ Authors@R: c(
   person(given = "Peng", family = "Wang", email = "wangp9@ucmail.uc.edu", role = c("aut"))
   )
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
-URL: https://xiaoruizhu.github.io/SPSP/, https://github.com/XiaoruiZhu/SPSP
+URL: https://xiaorui.site/SPSP/, https://github.com/XiaoruiZhu/SPSP
 BugReports: https://github.com/XiaoruiZhu/SPSP/issues
 License: GPL (>= 2)
 Encoding: UTF-8
 Depends:
   R (>= 3.5.0)
 Imports: 
-  Rcpp (>= 1.0.7)
+  Rcpp (>= 1.0.7),
+  glmnet, 
+  ncvreg,
+  Matrix, 
+  lars
 LinkingTo: Rcpp
 Suggests: 
-  glmnet, 
-  lars,
-  ncvreg,
   testthat (>= 3.0.0), 
-  MASS, 
-  Matrix
+  MASS
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
