@@ -10,7 +10,7 @@ Description: An implementation of the feature Selection procedure by Partitionin
             false negative rates) than other variable selection approaches. In addition, it can be flexibly 
             coupled with the solution paths of Lasso, adaptive Lasso, ridge regression, and other penalized 
             estimators.
-Version: 0.2.0
+Version: 0.2.0.9000
 Date: 2023-10-21
 Authors@R: c(
   person(given = "Xiaorui (Jeremy)", family = "Zhu", email = "zhuxiaorui1989@gmail.com", role = c("aut", "cre")),
