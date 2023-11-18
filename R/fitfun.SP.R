@@ -56,6 +56,46 @@ lasso.glmnet <- function(x,
 }
 
 
+#' \code{lassoCV.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}} with \code{lambda.1se} from cross-validation. 
+#'
+#' @param x a matrix of the independent variables. The dimensions are (nobs) and (nvars); each row is an observation vector. 
+#' @param y Response variable. Quantitative for \code{family="gaussian"} or \code{family="poisson"} (non-negative counts). 
+#' For \code{family="binomial"} should be either a factor with two levels.
+#' 
+#' @param family Response type. Either a character string representing one of the built-in families,
+#' or else a glm() family object.
+#' @param standardize logical argument. Should conduct standardization before the estimation? Default is TRUE.
+#' @param intercept logical. If x is a data.frame, this argument determines if the resulting model matrix should contain 
+#' a separate intercept or not. Default is TRUE.
+#' @param ... Additional optional arguments.
+#' 
+#' @return An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm. 
+#' 
+#' @rdname Fitting-Functions
+#' 
+#' @importFrom glmnet glmnet
+#' 
+#' @export
+#'
+lassoCV.glmnet <- 
+  function(x, 
+           y, 
+           family,
+           standardize, 
+           intercept, ...) {
+  if (!requireNamespace("glmnet", quietly = TRUE)) 
+    stop("Package ", sQuote("glmnet"), " needed but not available")
+  temp <- 
+    cv.glmnet(x = x, y = y, 
+              family = family, 
+              alpha = 1, 
+              intercept=intercept, standardize = standardize, 
+              parallel = TRUE, ...)
+  
+  fit_sp <- temp$glmnet.fit
+  return(fit_sp)
+}
+
 #' \code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} 
 #' from cross-validation lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
 #' @rdname Fitting-Functions

@@ -3,6 +3,7 @@
 \name{Fitting-Functions}
 \alias{Fitting-Functions}
 \alias{lasso.glmnet}
+\alias{lassoCV.glmnet}
 \alias{adalasso.glmnet}
 \alias{adalassoCV.glmnet}
 \alias{ridge.glmnet}
@@ -16,6 +17,8 @@ arguments x, y, family, standardize, and intercept, and return an object of clas
 \code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).}
 \usage{
 lasso.glmnet(x, y, family, standardize, intercept, ...)
+
+lassoCV.glmnet(x, y, family, standardize, intercept, ...)
 
 adalasso.glmnet(x, y, family, standardize, intercept, ...)
 
@@ -54,6 +57,8 @@ An object of class \code{"glmnet"} is returned to provide solution paths for the
 
 An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
 
+An object of class \code{"glmnet"} is returned to provide solution paths for the SPSP algorithm.
+
 An object of class \code{"lars"} is returned to provide solution paths for the SPSP algorithm.
 
 An object of class \code{"ncvreg"} is returned to provide SCAD penalty solution paths for the SPSP algorithm.
@@ -68,6 +73,8 @@ arguments x, y, family, standardize, and intercept, and return an object of clas
 \code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).
 
 \code{lasso.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}}.
+
+\code{lassoCV.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}} with \code{lambda.1se} from cross-validation.
 
 \code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} 
 from cross-validation lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
