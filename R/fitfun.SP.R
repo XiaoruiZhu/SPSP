@@ -90,7 +90,7 @@ lassoCV.glmnet <-
               family = family, 
               alpha = 1, 
               intercept=intercept, standardize = standardize, 
-              parallel = TRUE, ...)
+              ...)
   
   fit_sp <- temp$glmnet.fit
   return(fit_sp)
