@@ -10,14 +10,9 @@
 \alias{ridge.glmnet}
 \alias{lasso.lars}
 \alias{SCAD.ncvreg}
-\alias{SCAD.CV.ncvreg}
 \alias{MCP.ncvreg}
-\alias{MCP.CV.ncvreg}
-\title{Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
-to obtain the solution paths for the SPSP algorithm. The users can also customize a
-function to generate the solution paths. As long as the customized function take 
-arguments x, y, family, standardize, and intercept, and return an object of class 
-\code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).}
+\title{Nine Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
+to obtain the solution paths for the SPSP algorithm.}
 \usage{
 lasso.glmnet(x, y, family, standardize, intercept, ...)
 
@@ -35,11 +30,7 @@ lasso.lars(x, y, family, standardize, intercept, ...)
 
 SCAD.ncvreg(x, y, family, standardize, intercept, ...)
 
-SCAD.CV.ncvreg(x, y, family, standardize, intercept, ...)
-
 MCP.ncvreg(x, y, family, standardize, intercept, ...)
-
-MCP.CV.ncvreg(x, y, family, standardize, intercept, ...)
 }
 \arguments{
 \item{x}{a matrix of the independent variables. The dimensions are (nobs) and (nvars); each row is an observation vector.}
@@ -77,46 +68,11 @@ An object of class \code{"lars"} is returned to provide solution paths for the S
 
 An object of class \code{"ncvreg"} to provide SCAD penalty solution paths for the SPSP algorithm.
 
-An object of class \code{"ncvreg"} using \code{lambda.min} from the 10-fold 
-cross-validation to provide SCAD penalty solution paths for the SPSP algorithm.
-
 An object of class \code{"ncvreg"} to provide MCP penalty solution paths for the SPSP algorithm.
-
-An object of class \code{"ncvreg"} using \code{lambda.min} from the 10-fold 
-cross-validation to provide MCP penalty solution paths for the SPSP algorithm.
 }
 \description{
-Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
-to obtain the solution paths for the SPSP algorithm. The users can also customize a
-function to generate the solution paths. As long as the customized function take 
-arguments x, y, family, standardize, and intercept, and return an object of class 
-\code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).
-
-\code{lasso.glmnet} uses lasso selection from \code{\link[glmnet]{glmnet}}.
-
-\code{lassoCV.glmnet} uses lasso selection from \code{\link[cv.glmnet]{glmnet}} with 10-fold cross-validation.
-
-\code{adalasso.glmnet} the function to conduct the adaptive lasso selection using the \code{lambda.1se} 
-from cross-validation lasso method to obtain initial coefficients. It uses package \code{\link[glmnet]{glmnet}}.
-
-\code{adalassoCV.glmnet} adaptive lasso selection using the \code{lambda.1se} from 
-cross-validation to obtain initial coefficients and penalty.factor.
-
-\code{adalassoCV.glmnet} adaptive lasso selection using the \code{lambda.min} 
-from 10-fold cross-validation adaptive lasso method to obtain initial coefficients
-as penalty_factor. It uses package \code{\link[glmnet]{glmnet}}.
-
-\code{ridge.glmnet} uses ridge regression to obtain the solution path.
-
-\code{lasso.lars} uses lasso selection in \code{\link[lars]{lars}} to obtain the solution path.
-
-\code{SCAD.ncvreg} uses SCAD penalty from \code{\link[ncvreg]{ncvreg}} for fitting solution paths.
-
-\code{SCAD.CV.ncvreg} uses SCAD penalty from \code{\link[ncvreg]{ncvreg}} 10-fold cross-validation
-for obtaining solution paths.
-
-\code{MCP.ncvreg} uses MCP penalty from \code{\link[ncvreg]{ncvreg}} for obtaining solution paths.
-
-\code{MCP.CV.ncvreg} uses MCP penalty from \code{\link[ncvreg]{ncvreg}} 10-fold cross-validation
-for obtaining solution paths.
+The user can also customize a function to generate the solution paths, as long as 
+the customized function take the arguments x, y, family, standardize, intercept, 
+and return an object of class 
+\code{glmnet}, \code{ncvreg}, and \code{lars}.
 }

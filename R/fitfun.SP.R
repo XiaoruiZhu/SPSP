@@ -10,12 +10,14 @@
 
 
 
-#' @title Four Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
-#' to obtain the solution paths for the SPSP algorithm. The users can also customize a
-#' function to generate the solution paths. As long as the customized function take 
-#' arguments x, y, family, standardize, and intercept, and return an object of class 
-#' \code{glmnet}, \code{lars} (or \code{SCAD}, \code{MCP} in the future).
-#'
+#' @title Nine Fitting-Functions that can be used as an input of \code{fitfun.SP} argument 
+#' to obtain the solution paths for the SPSP algorithm. 
+#' @description
+#' The user can also customize a function to generate the solution paths, as long as 
+#' the customized function take the arguments x, y, family, standardize, intercept, 
+#' and return an object of class 
+#' \code{glmnet}, \code{ncvreg}, and \code{lars}.
+#' 
 #' @name Fitting-Functions
 NULL
 
@@ -225,7 +227,7 @@ adalassoCV.glmnet <- function(x,
     penalty.factor <- abs(first_ada_beta + 1/sqrt(n))^(-1)
   }
   
-  fit_sp <- glmnet(x = x, y = y, # penalty.factor = penalty.factor, 
+  fit_sp <- glmnet(x = x, y = y, penalty.factor = penalty.factor, 
                    family = family, alpha=1, 
                    intercept = intercept, standardize = standardize, ...)
   
@@ -236,7 +238,7 @@ adalassoCV.glmnet <- function(x,
 }
 
 
-#' \code{adalassoCV.glmnet} adaptive lasso selection using the \code{lambda.min} 
+#' \code{adalassoCVmin.glmnet} adaptive lasso selection using the \code{lambda.min} 
 #' from 10-fold cross-validation adaptive lasso method to obtain initial coefficients
 #' as penalty_factor. It uses package \code{\link[glmnet]{glmnet}}.
 #' @rdname Fitting-Functions
@@ -386,44 +388,6 @@ SCAD.ncvreg <- function(x,
   return(fit_sp)
 }
 
-#' \code{SCAD.CV.ncvreg} uses SCAD penalty from \code{\link[ncvreg]{ncvreg}} 10-fold cross-validation
-#' for obtaining solution paths.
-#' 
-#' @rdname Fitting-Functions
-#' 
-#' @return An object of class \code{"ncvreg"} using \code{lambda.min} from the 10-fold 
-#' cross-validation to provide SCAD penalty solution paths for the SPSP algorithm. 
-#' 
-#' @importFrom ncvreg ncvreg
-#' 
-#' @export
-#'
-SCAD.CV.ncvreg <- function(x, 
-                        y, 
-                        family,
-                        standardize, 
-                        intercept, ...) {
-  if (!requireNamespace("ncvreg", quietly = TRUE)) 
-    stop("Package ", sQuote("ncvreg"), " is needed but not available")
-  
-  # If the penalty.factor are given, use the penalties.
-  
-  cv_fl1 <- cv.ncvreg(X = x,
-                      y = y,
-                      ...)
-  
-  lambda_tem <- cv_fl1$lambda.min
-  
-  fit_sp <- ncvfit(X = x, 
-                   y = y, 
-                   lambda = lambda_tem, 
-                   # family="gaussian", alpha=1, intercept=FALSE, standardize = FALSE,
-                   penalty = "SCAD",
-                   ...) 
-  
-  return(fit_sp)
-}
-
 #' \code{MCP.ncvreg} uses MCP penalty from \code{\link[ncvreg]{ncvreg}} for obtaining solution paths.
 #' 
 #' @rdname Fitting-Functions
@@ -450,43 +414,6 @@ MCP.ncvreg <- function(x,
                    alpha = 1,
                    penalty = "MCP",
                    ...)
-  
-  return(fit_sp)
-}
-
-#' \code{MCP.CV.ncvreg} uses MCP penalty from \code{\link[ncvreg]{ncvreg}} 10-fold cross-validation
-#' for obtaining solution paths.
-#' 
-#' @rdname Fitting-Functions
-#' 
-#' @return An object of class \code{"ncvreg"} using \code{lambda.min} from the 10-fold 
-#' cross-validation to provide MCP penalty solution paths for the SPSP algorithm. 
-#' @importFrom ncvreg ncvreg
-#' 
-#' @export
-#'
-MCP.CV.ncvreg <- function(x, 
-                       y, 
-                       family,
-                       standardize, 
-                       intercept, ...) {
-  if (!requireNamespace("ncvreg", quietly = TRUE)) 
-    stop("Package ", sQuote("ncvreg"), " is needed but not available")
-  
-  # If the penalty.factor are given, use the penalties.
-  
-  cv_fl1 <- cv.ncvreg(X = x, 
-                      y = y,
-                      ...)
-  
-  lambda_tem <- cv_fl1$lambda.min
-  
-  fit_sp <- ncvfit(X = x,
-                   y = y,
-                   lambda = lambda_tem, 
-                   # family="gaussian", alpha=1, intercept=FALSE, standardize = FALSE,
-                   penalty = "MCP",
-                   ...) 
   
   return(fit_sp)
 }
